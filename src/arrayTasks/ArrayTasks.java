@@ -195,6 +195,7 @@ public class ArrayTasks
                 arrayTask3[i][j] = (int) (Math.random() * 9 + 1);
             }
         }
+        System.out.println("Исходный массив");
         System.out.println(Arrays.deepToString(arrayTask3));
         for (int i = 0; i < arrayTask3.length ; i++)
         {
@@ -210,6 +211,7 @@ public class ArrayTasks
                 }
             }
         }
+        System.out.println("Преобразованный массив:");
         System.out.println(Arrays.deepToString(arrayTask3));
     }
 }
