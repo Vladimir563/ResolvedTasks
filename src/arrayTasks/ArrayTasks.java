@@ -1,5 +1,6 @@
 package arrayTasks;
 
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -65,7 +66,7 @@ public class ArrayTasks
         int [] nums = new int [4];
         for (int i = 0; i < nums.length ; i++)
         {
-            nums[i] =  10 + (int) (Math.random() * 99 + 1);
+            nums[i] =  10 + (int) (Math.random() * 89 + 1);
         }
         System.out.println(Arrays.toString(nums));
         int increasingNum = 0;
@@ -116,26 +117,103 @@ public class ArrayTasks
         }
         else if (matchZero > matchOne && matchZero > matchMinusOne)
         {
-            System.out.printf("Элемент 0 встречается чаще всего (%d раз)", matchZero);
+            System.out.printf("Элемент 0 встречается чаще всего (%d раз)\n", matchZero);
         }
         else{}
-    }
-}
 
-/*Массивы
-
-        Многомерные массивы
+/*      Многомерные массивы
         Задача 1
-        Создать двумерный массив из 8 строк по 5 столбцов в каждой из случайных целых чисел из отрезка [10;99]. Вывести массив в консоль.
+        Создать двумерный массив из 8 строк по 5 столбцов в каждой из случайных целых чисел из отрезка [10;99].
+        Вывести массив в консоль.
+*/      System.out.println("\nTask1(multidimentional arrays)\n");
+        int [][] multiDimArr = new int[8][5];
+        for (int i = 0; i < multiDimArr.length; i++)
+        {
+            for (int j = 0; j < multiDimArr[i].length ; j++)
+            {
+                multiDimArr[i][j] = 10 + (int)(Math.random() * 89 + 1);
+            }
+        }
+        System.out.println(Arrays.deepToString(multiDimArr));
 
-        Задача 2
-        Cоздать двумерный массив из 7 строк по 4 столбца в каждой из случайных целых чисел из отрезка [-5;5]. Вывести массив в консоль.
+/*      Задача 2
+        Cоздать двумерный массив из 7 строк по 4 столбца в каждой из случайных целых чисел из отрезка [-5;5].
+        Вывести массив в консоль.
         Определить и вывести на экран индекс строки с наибольшим по модулю произведением элементов.
         Если таких строк несколько, то вывести индекс первой встретившейся из них.
+*/      System.out.println("\nTask2(multidimentional arrays)\n");
+        int [][] multiDArr = new int [7][4];
+        for (int i = 0; i <multiDArr.length ; i++)
+        {
+            for (int j = 0; j < multiDArr[i].length ; j++)
+            {
+                multiDArr[i][j] = (int) (Math.random() * 10) - 5;
+            }
+        }
+        System.out.println(Arrays.deepToString(multiDArr));
+        int [] arraysSum = new int [multiDArr.length];
 
-        Задача 3
+        for (int i = 0; i < arraysSum.length ; i++)
+        {
+            arraysSum[i] = 1;
+        }
+
+        for (int i = 0; i < multiDArr.length; i++)
+        {
+            for (int j = 0; j < multiDArr[i].length ; j++)
+            {
+                arraysSum[i] *= Math.abs(multiDArr[i][j]);
+            }
+        }
+        int [] sortArraySum = arraysSum.clone();
+        Arrays.sort(sortArraySum);
+
+//      System.out.println(Arrays.toString(arraysSum)); //FIXME: раскомментировать для просмотра массива с произведением членов строк
+        int index = 0;
+        for (int i = 0; i < arraysSum.length ; i++)
+        {
+            if(arraysSum[i] == sortArraySum[sortArraySum.length-1])
+            {
+                index = i;
+                break;
+            }
+        }
+        System.out.printf("%d-я строка с наибольшим по модулю произведением элементов (%d)\n", index+1, sortArraySum[sortArraySum.length-1]);
+
+/*      Задача 3
         Создать двумерный массив из 6 строк по 7 столбцов в каждой из случайных целых чисел из отрезка [0;9]. Вывести массив в консоль.
         Преобразовать массив таким образом, чтобы на первом месте в каждой строке стоял её наибольший элемент.
         При этом изменять состав массива нельзя, а можно только переставлять элементы в рамках одной строки.
-        Порядок остальных элементов строки не имеет значения (т.е. можно соврешить только одну перестановку, а можно отсортировать по убыванию каждую строку).
+        Порядок остальных элементов строки не имеет значения (т.е. можно совершить только одну перестановку, а можно отсортировать по убыванию каждую строку).
         Вывести преобразованный массив в консоль.*/
+        System.out.println("\nTask3(multidimentional arrays)\n");
+        int [][] arrayTask3 = new int [6][7];
+        for (int i = 0; i < arrayTask3.length ; i++)
+        {
+            for (int j = 0; j < arrayTask3[i].length; j++)
+            {
+                arrayTask3[i][j] = (int) (Math.random() * 9 + 1);
+            }
+        }
+        System.out.println(Arrays.deepToString(arrayTask3));
+        for (int i = 0; i < arrayTask3.length ; i++)
+        {
+            int min = 0;
+            for (int j = 0; j < arrayTask3[i].length ; j++)
+            {
+                if(arrayTask3[i][j] > min)
+                {
+                    min = arrayTask3[i][j];
+                    int temporaryVar = arrayTask3[i][0];
+                    arrayTask3[i][0] = arrayTask3[i][j];
+                    arrayTask3[i][j] = temporaryVar;
+                }
+            }
+        }
+        System.out.println(Arrays.deepToString(arrayTask3));
+    }
+}
+
+
+
+
