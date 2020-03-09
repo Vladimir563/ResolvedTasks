@@ -50,14 +50,16 @@ public class EssentialArrayTasks
         System.out.println("\nTask3:\n");
         int arrLenght = (int) (Math.random() * 10) + 1;
         int [] randomArr = new int[arrLenght];
+        int sumArr = 0;
         for (int i = 0; i < randomArr.length; i++)
         {
             randomArr[i] = (int) (Math.random() * 100);
+            sumArr += randomArr[i];
         }
         System.out.println(Arrays.toString(randomArr));
         Arrays.sort(randomArr);
         System.out.println(Arrays.toString(randomArr));
-        System.out.printf("Min = %d \nMedium = %d \nMax = %d\n",randomArr[0],randomArr[(randomArr.length-1)/2],randomArr[randomArr.length-1]);
+        System.out.printf("Min = %d \nMiddle(среднее арифметическое) = %d \nMax = %d\n",randomArr[0],sumArr/randomArr.length,randomArr[randomArr.length-1]);
 
    /*   4.Пользователь вводит с клавиатуры натуральное число большее 3, которое сохраняется в переменную n.
         Если пользователь ввёл не подходящее число, то программа должна просить пользователя повторить ввод.
