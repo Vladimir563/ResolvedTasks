@@ -1,1 +1,1 @@
-# TaskResolved1 JJD ITMO
+# TaskResolved1
