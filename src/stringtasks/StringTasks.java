@@ -1,6 +1,8 @@
 package stringtasks;
 
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringTasks
 {
@@ -38,6 +40,18 @@ public class StringTasks
         String sentence1 = "кот кот Котик котяра кошка";
         String word = "кот";
         System.out.printf("Количество вхождений слова \"%s\" в строку \"%s\" (без учета регистра) = %d\n\n",word,sentence1,EntranceWordsCount(word,sentence1));
+        //с помощью регулярных выражений
+        System.out.println("With help regular expression:");
+        Pattern pattern = Pattern.compile("кот(\\w*)");
+        Matcher matcher = pattern.matcher(sentence1);
+        int matchCount = 0;
+        while(matcher.find())
+        {
+            matchCount++;
+        }
+        System.out.println("С учетом регистра (case-insensitive matching assumes that only characters in the US-ASCII)");
+        System.out.printf("Количество вхождений слова \"%s\" = %d\n\n",word,matchCount);
+
 
 /*      4)  Написать функцию, которая проверяет, является ли строка палиндромом.
             Палиндром — это слово или фраза, которые одинаково читаются по буквам
@@ -152,7 +166,8 @@ public class StringTasks
         return existWord;
     }
 
-    public static String ReturnFirstWordByLetter(String [] strArr) //метод возвращающий слово первая буква которого идет раньше первых букв остальных слов из массива
+    public static String ReturnFirstWordByLetter(String [] strArr) //метод возвращающий слово первая буква которого
+    // идет раньше первых букв остальных слов из массива
     {
         String firstWordInArr = "Я";
         for (int i = 0; i < strArr.length; i++)
