@@ -99,7 +99,19 @@ public class StringTasks
 /*      6)  Пользователь вводит названия городов через пробел. Вы их присваиваете переменной.
         Переставьте названия так, чтобы они были упорядочены по алфавиту.*/
         System.out.println("Task6:");
+        String usersEnter = "Москва Архангельск Санкт-Петербург Лондон";
 
+        String [] cityArr = usersEnter.split(" ");
+        String [] citySort = new String[cityArr.length];
+        System.out.println("Исходный массив:");
+        System.out.println(Arrays.toString(cityArr));
+        for (int i = 0; i < citySort.length; i++)
+        {
+            citySort[i] = ReturnFirstWordByLetter(cityArr);
+            cityArr = DeleteElementFromArr(cityArr, ReturnFirstWordByLetter(cityArr));
+        }
+        System.out.println("Отсортированный массив:");
+        System.out.println(Arrays.toString(citySort));
     }
 
     public static int EntranceWordsCount (String word, String sentence)
@@ -138,6 +150,34 @@ public class StringTasks
             }
         }
         return existWord;
+    }
+
+    public static String ReturnFirstWordByLetter(String [] strArr) //метод возвращающий слово первая буква которого идет раньше первых букв остальных слов из массива
+    {
+        String firstWordInArr = "Я";
+        for (int i = 0; i < strArr.length; i++)
+        {
+            if(strArr[i].toCharArray()[0] < firstWordInArr.toCharArray()[0])
+            {
+                firstWordInArr = strArr[i];
+            }
+        }
+        return firstWordInArr;
+    }
+
+    public static String [] DeleteElementFromArr(String [] strArr, String str) //метод удаляющий слово из массива
+    {
+        String [] newArr = new String[strArr.length-1];
+        int counter = 0;
+        for (int i = 0; i < strArr.length; i++)
+        {
+            if(strArr[i] != str)
+            {
+                newArr[counter] = strArr[i];
+                counter++;
+            }
+        }
+        return newArr;
     }
 }
 
