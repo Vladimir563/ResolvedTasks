@@ -40,7 +40,7 @@ public class StringTasks
         String sentence1 = "кот кот Котик котяра кошка";
         String word = "кот";
         System.out.printf("Количество вхождений слова \"%s\" в строку \"%s\" (без учета регистра) = %d\n\n",word,sentence1,EntranceWordsCount(word,sentence1));
-        //с помощью регулярных выражений
+        //FIXME: C помощью регулярных выражений
         System.out.println("With help regular expression:");
         Pattern pattern = Pattern.compile("кот(\\w*)");
         Matcher matcher = pattern.matcher(sentence1);
