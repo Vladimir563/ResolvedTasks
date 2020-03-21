@@ -9,6 +9,7 @@ public class Cat
     private int health;
     private int hitPower;
     private String ownersAdress;
+    private boolean isCatMayFight;
 
     //constructors
     public Cat(String name) //1
@@ -89,7 +90,8 @@ public class Cat
         this.health = health;
     }
 
-    public int getHitPower() {
+    public int getHitPower()
+    {
         return hitPower;
     }
 
@@ -104,6 +106,11 @@ public class Cat
     public void setOwnersAdress(String ownersAdress)
     {
         this.ownersAdress = ownersAdress;
+    }
+
+    public boolean isCatMayFight()
+    {
+        return isCatMayFight;
     }
 
     @Override
@@ -121,17 +128,24 @@ public class Cat
 
     public void Fight(Cat anotherCat)
     {
+        isCatMayFight = true;
         if(this.health < anotherCat.hitPower)
+        {
+            isCatMayFight = false;
+        }
+
+        if(!isCatMayFight)
         {
             System.out.printf("%s пока не может драться\n",this.name);
             return;
         }
         else
         {
-            System.out.printf("Здоровье кота %s уменьшилось -%d%% (%s)\n",this.name,anotherCat.hitPower,anotherCat.name);
+            isCatMayFight = true;
             this.health -= anotherCat.hitPower;
+            System.out.printf("Здоровье кота %s уменьшилось -%d%% (%s)\n",this.name,anotherCat.hitPower,anotherCat.name);
             System.out.printf("Текущий уровень здоровья %s (%d%%)\n",this.name,this.health);
         }
-
     }
+
 }

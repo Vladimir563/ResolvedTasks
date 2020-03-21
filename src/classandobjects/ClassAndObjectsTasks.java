@@ -68,12 +68,12 @@ public class ClassAndObjectsTasks
         Cat fightCat2  = new Cat("Pers" ,12 ,5 ,"red",100,30,owner1);
         System.out.println();
 
-        for (int i = 0; i < 4; i++)
+        do
         {
             fightCat1.Fight(fightCat2);
             TimeUnit.SECONDS.sleep(1);
         }
-
+        while(fightCat1.isCatMayFight());
     }
 }
 
