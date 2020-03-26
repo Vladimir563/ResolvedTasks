@@ -1,5 +1,7 @@
 package thefarm;
 
+import static thefarm.Main.*;
+
 public class HomeAnimal extends Animal
 {
     private int health;
@@ -53,17 +55,18 @@ public class HomeAnimal extends Animal
 
     public void recoverHealth()
     {
-        if(startHealth >= health)
+        if(startHealth > health)
         {
             health++;
         }
     }
 
-    public void runningAwayFormWildAnimal(WildAnimal wildAnimal, HomeAnimal homeAnimal)
+    public void runningAwayFromWildAnimal(WildAnimal wildAnimal, HomeAnimal homeAnimal)
     {
         if(homeAnimal.speed > wildAnimal.speed)
         {
-            System.out.printf("%s убежал(а) от %s\n", homeAnimal.name,wildAnimal.name);
+            System.out.printf(ANSI_GREEN + "%s убежал(а) от %s\n" + ANSI_RESET, homeAnimal.name,wildAnimal.name);
+            System.out.printf( ANSI_RED + "%s уходит ни с чем...\n" + ANSI_RESET, wildAnimal.name);
         }
         else
         {

@@ -1,10 +1,14 @@
 package thefarm;
 
+import static thefarm.Main.*;
+
 public class Farmer
 {
     private int resourcesCount = 5;
 
     private static Farmer farmer;
+
+    private boolean areWhereCanGivenAnimals;
 
     private Farmer()
     {
@@ -21,50 +25,66 @@ public class Farmer
 
     public void packingResources(HomeAnimal animal) //собрать ресурсы
     {
-        resourcesCount += animal.getResourcesCount();
-        animal.setResourcesCount(0);
+        resourcesCount += 2;
+        animal.setResourcesCount(animal.getResourcesCount() - 2);
     }
 
     public void eatHomeAnimal() // сьесть домашнее животное
     {
+        areWhereCanGivenAnimals = false;
         for (int i = 0; i < Farm.homeAnimals.length; i++)
         {
-            if(Farm.homeAnimals[i] instanceof IGiveResourcesable && Farm.homeAnimals[i].isAnimalAlive() && Farm.homeAnimals[i].getResourcesCount() != 0)
+            if(Farm.homeAnimals[i] instanceof IGiveResourcesable && Farm.homeAnimals[i].isAnimalAlive() && Farm.homeAnimals[i].getResourcesCount() > 0)
             {
-                System.out.println("На ферме еще есть животные которые могут дать ресурс\n");
+                System.out.printf(ANSI_BLUE + "Сбор ресурсов с животного %s (собрано %d)\n" + ANSI_RESET,Farm.homeAnimals[i].name, 2);
                 packingResources(Farm.homeAnimals[i]);
-                break;
+                areWhereCanGivenAnimals = true;
             }
-            else if (Farm.homeAnimals[i] instanceof ICanBeEatable && Farm.homeAnimals[i].isAnimalAlive() && !(Farm.homeAnimals[i] instanceof IGiveResourcesable))
+        }
+
+        if(!areWhereCanGivenAnimals)
+        {
+            System.out.println(ANSI_RED + "На ферме не осталось животных которые могут дать ресурс\n" + ANSI_RESET);
+            for (int i = 0; i < Farm.homeAnimals.length; i++)
             {
-                resourcesCount += Farm.homeAnimals[i].getWeight();
-                Farm.homeAnimals[i].setAnimalAlive(false);
-                System.out.printf("%s сьедено фермером\n",Farm.homeAnimals[i].name );
-                break;
+                if(Farm.homeAnimals[i] instanceof ICanBeEatable && Farm.homeAnimals[i].isAnimalAlive())
+                {
+                    resourcesCount += Farm.homeAnimals[i].getWeight();
+                    Farm.homeAnimals[i].weight = 0;
+                    Farm.homeAnimals[i].setAnimalAlive(false);
+                    System.out.printf(ANSI_RED + "%s сьедено фермером\n" + ANSI_RESET,Farm.homeAnimals[i].name );
+                    return;
+                }
             }
         }
     }
 
     @Override
-    public String toString() {
-        return "Farmer{" +
-                "resourcesCount=" + resourcesCount +
-                '}';
+    public String toString()
+    {
+        return ANSI_CYAN + "Farmer's resourcesCount = " + resourcesCount + ANSI_RESET;
     }
 
-    public void driveAwayWildAnimal(WildAnimal wildAnimal, boolean isCanDriveAway)
+    public boolean driveAwayWildAnimal(WildAnimal wildAnimal, boolean isCanDriveAway)
     {
-        if(isCanDriveAway)
+        boolean isRunAway = false;
+        if(isCanDriveAway && wildAnimal.escapeCounter <= 3)
         {
             wildAnimal.escapeCounter++;
-            System.out.printf("Фермер прогнал %s (сбежал(а): %d раз)\n",wildAnimal.name,wildAnimal.escapeCounter);
+            System.out.printf(ANSI_GREEN + "Фермер прогнал %s (сбежал(а): %d раз)\n" + ANSI_RESET,wildAnimal.name,wildAnimal.escapeCounter);
+            isRunAway = true;
         }
+        return isRunAway;
     }
 
     public void feedHomeAnimal(HomeAnimal homeAnimal)
     {
-        homeAnimal.recoverHealth();
-        System.out.printf("Здоровье %s восстановлено (%d)\n", homeAnimal.name, homeAnimal.getHealth());
+        if(homeAnimal.isAnimalAlive() && homeAnimal.getHealth() > 0)
+        {
+            homeAnimal.recoverHealth();
+            System.out.printf(ANSI_PURPLE + "Здоровье %s восстановлено (%d)\n" + ANSI_RESET, homeAnimal.name, homeAnimal.getHealth());
+        }
+        else System.out.println(ANSI_RED + "Нельзя кормить умершее животное" + ANSI_RESET);
     }
 
     public int getResourcesCount() {

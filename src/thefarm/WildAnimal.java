@@ -1,9 +1,12 @@
 package thefarm;
 
+import static thefarm.Main.*;
+
 public class WildAnimal extends Animal
 {
     protected int power;
     protected int escapeCounter = 0;
+    protected boolean canComeToTheFarm = true;
 
     public WildAnimal(String name, double weight, int speed, int power)
     {
@@ -23,15 +26,23 @@ public class WildAnimal extends Animal
 
     public void eatOrHurtHomeAnimal(HomeAnimal homeAnimal)
     {
-        if(this.power >= homeAnimal.getHealth())
+        if(!homeAnimal.isAnimalAlive())
         {
-            System.out.printf("%s был(а) сьеден(а) %s\n", homeAnimal.name, this.name);
+            System.out.printf(ANSI_RED + "!!!%s пришел на ферму!!!\n" + ANSI_RESET,this.name);
+            System.out.println(ANSI_YELLOW + "Нельзя съесть умершее животное" + ANSI_RESET);
+        }
+        else if(this.power > homeAnimal.getHealth())
+        {
+            System.out.printf(ANSI_RED + "!!!%s пришел на ферму!!!\n" + ANSI_RESET,this.name);
+            System.out.printf(ANSI_RED + "%s был(а) сьеден(а) %s\n" + ANSI_RESET, homeAnimal.name, this.name);
             homeAnimal.setAnimalAlive(false);
+            homeAnimal.setHealth(0);
         }
         else
         {
+            System.out.printf(ANSI_RED + "!!!%s пришел на ферму!!!\n" + ANSI_RESET,this.name);
+            System.out.printf(ANSI_RED + "Животное %s ранено %s (-%d hp)\n" + ANSI_RESET, homeAnimal.name, this.name, this.power);
             homeAnimal.setHealth(homeAnimal.getHealth() - this.power);
         }
-
     }
 }
