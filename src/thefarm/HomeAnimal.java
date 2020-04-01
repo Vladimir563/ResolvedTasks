@@ -65,8 +65,8 @@ public class HomeAnimal extends Animal
     {
         if(homeAnimal.speed > wildAnimal.speed)
         {
-            System.out.printf(ANSI_GREEN + "%s убежал(а) от %s\n" + ANSI_RESET, homeAnimal.name,wildAnimal.name);
-            System.out.printf( ANSI_RED + "%s уходит ни с чем...\n" + ANSI_RESET, wildAnimal.name);
+            System.out.printf(textColours.ANSI_GREEN.getCode() + "%s убежал(а) от %s\n" + textColours.ANSI_RESET.getCode(), homeAnimal.name,wildAnimal.name);
+            System.out.printf( textColours.ANSI_RED.getCode() + "%s уходит ни с чем...\n" + textColours.ANSI_RESET.getCode(), wildAnimal.name);
         }
         else
         {

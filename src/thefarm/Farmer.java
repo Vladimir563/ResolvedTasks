@@ -4,18 +4,22 @@ import static thefarm.Main.*;
 
 public class Farmer
 {
+    //данный вариант синглтон нельзя использовать в многопоточных средах
     private int resourcesCount = 5;
 
     private static Farmer farmer;
 
     private boolean areWhereCanGivenAnimals;
 
+    private static Farm farm;
+
     private Farmer()
     {
     }
 
-    public static Farmer getInstance() //получить экземпляр единственного фермера на ферме
+    public static Farmer getInstance(Farm f) //получить экземпляр единственного фермера на ферме
     {
+        farm = f;
         if(farmer == null)
         {
             farmer = new Farmer();
@@ -32,27 +36,27 @@ public class Farmer
     public void eatHomeAnimal() // сьесть домашнее животное
     {
         areWhereCanGivenAnimals = false;
-        for (int i = 0; i < Farm.homeAnimals.length; i++)
+        for (int i = 0; i < farm.getHomeAnimals().length; i++)
         {
-            if(Farm.homeAnimals[i] instanceof IGiveResourcesable && Farm.homeAnimals[i].isAnimalAlive() && Farm.homeAnimals[i].getResourcesCount() > 0)
+            if(farm.getHomeAnimals()[i] instanceof IGiveResourcesable && farm.getHomeAnimals()[i].isAnimalAlive() && farm.getHomeAnimals()[i].getResourcesCount() > 0)
             {
-                System.out.printf(ANSI_BLUE + "Сбор ресурсов с животного %s (собрано %d)\n" + ANSI_RESET,Farm.homeAnimals[i].name, 2);
-                packingResources(Farm.homeAnimals[i]);
+                System.out.printf(textColours.ANSI_BLUE.getCode() + "Сбор ресурсов с животного %s (собрано %d)\n" + textColours.ANSI_RESET.getCode(),farm.getHomeAnimals()[i].name, 2);
+                packingResources(farm.getHomeAnimals()[i]);
                 areWhereCanGivenAnimals = true;
             }
         }
 
         if(!areWhereCanGivenAnimals)
         {
-            System.out.println(ANSI_RED + "На ферме не осталось животных которые могут дать ресурс\n" + ANSI_RESET);
-            for (int i = 0; i < Farm.homeAnimals.length; i++)
+            System.out.println(textColours.ANSI_RED.getCode()+ "На ферме не осталось животных которые могут дать ресурс\n" + textColours.ANSI_RESET.getCode());
+            for (int i = 0; i < farm.getHomeAnimals().length; i++)
             {
-                if(Farm.homeAnimals[i] instanceof ICanBeEatable && Farm.homeAnimals[i].isAnimalAlive())
+                if(farm.getHomeAnimals()[i] instanceof ICanBeEatable && farm.getHomeAnimals()[i].isAnimalAlive())
                 {
-                    resourcesCount += Farm.homeAnimals[i].getWeight();
-                    Farm.homeAnimals[i].weight = 0;
-                    Farm.homeAnimals[i].setAnimalAlive(false);
-                    System.out.printf(ANSI_RED + "%s сьедено фермером\n" + ANSI_RESET,Farm.homeAnimals[i].name );
+                    resourcesCount += farm.getHomeAnimals()[i].getWeight();
+                    farm.getHomeAnimals()[i].weight = 0;
+                    farm.getHomeAnimals()[i].setAnimalAlive(false);
+                    System.out.printf(textColours.ANSI_RED.getCode() + "%s сьедено фермером\n" + textColours.ANSI_RESET.getCode(),farm.getHomeAnimals()[i].name );
                     return;
                 }
             }
@@ -62,7 +66,7 @@ public class Farmer
     @Override
     public String toString()
     {
-        return ANSI_CYAN + "Farmer's resourcesCount = " + resourcesCount + ANSI_RESET;
+        return textColours.ANSI_CYAN.getCode() + "Farmer's resourcesCount = " + resourcesCount + textColours.ANSI_RESET.getCode();
     }
 
     public boolean driveAwayWildAnimal(WildAnimal wildAnimal, boolean isCanDriveAway)
@@ -71,7 +75,7 @@ public class Farmer
         if(isCanDriveAway && wildAnimal.escapeCounter <= 3)
         {
             wildAnimal.escapeCounter++;
-            System.out.printf(ANSI_GREEN + "Фермер прогнал %s (сбежал(а): %d раз)\n" + ANSI_RESET,wildAnimal.name,wildAnimal.escapeCounter);
+            System.out.printf(textColours.ANSI_GREEN.getCode() + "Фермер прогнал %s (сбежал(а): %d раз)\n" + textColours.ANSI_RESET.getCode(),wildAnimal.name,wildAnimal.escapeCounter);
             isRunAway = true;
         }
         return isRunAway;
@@ -82,9 +86,9 @@ public class Farmer
         if(homeAnimal.isAnimalAlive() && homeAnimal.getHealth() > 0)
         {
             homeAnimal.recoverHealth();
-            System.out.printf(ANSI_PURPLE + "Здоровье %s восстановлено (%d)\n" + ANSI_RESET, homeAnimal.name, homeAnimal.getHealth());
+            System.out.printf(textColours.ANSI_PURPLE.getCode() + "Здоровье %s восстановлено (%d)\n" + textColours.ANSI_RESET.getCode(), homeAnimal.name, homeAnimal.getHealth());
         }
-        else System.out.println(ANSI_RED + "Нельзя кормить умершее животное" + ANSI_RESET);
+        else System.out.println(textColours.ANSI_RED.getCode() + "Нельзя кормить умершее животное" + textColours.ANSI_RESET.getCode());
     }
 
     public int getResourcesCount() {

@@ -28,20 +28,20 @@ public class WildAnimal extends Animal
     {
         if(!homeAnimal.isAnimalAlive())
         {
-            System.out.printf(ANSI_RED + "!!!%s пришел на ферму!!!\n" + ANSI_RESET,this.name);
-            System.out.println(ANSI_YELLOW + "Нельзя съесть умершее животное" + ANSI_RESET);
+            System.out.printf(textColours.ANSI_RED.getCode() + "!!!%s пришел на ферму!!!\n" + textColours.ANSI_RESET.getCode(),this.name);
+            System.out.println(textColours.ANSI_YELLOW.getCode() + "Нельзя съесть умершее животное" + textColours.ANSI_RESET.getCode());
         }
         else if(this.power > homeAnimal.getHealth())
         {
-            System.out.printf(ANSI_RED + "!!!%s пришел на ферму!!!\n" + ANSI_RESET,this.name);
-            System.out.printf(ANSI_RED + "%s был(а) сьеден(а) %s\n" + ANSI_RESET, homeAnimal.name, this.name);
+            System.out.printf(textColours.ANSI_RED.getCode() + "!!!%s пришел на ферму!!!\n" + textColours.ANSI_RESET.getCode(),this.name);
+            System.out.printf(textColours.ANSI_RED.getCode() + "%s был(а) сьеден(а) %s\n" + textColours.ANSI_RESET.getCode(), homeAnimal.name, this.name);
             homeAnimal.setAnimalAlive(false);
             homeAnimal.setHealth(0);
         }
         else
         {
-            System.out.printf(ANSI_RED + "!!!%s пришел на ферму!!!\n" + ANSI_RESET,this.name);
-            System.out.printf(ANSI_RED + "Животное %s ранено %s (-%d hp)\n" + ANSI_RESET, homeAnimal.name, this.name, this.power);
+            System.out.printf(textColours.ANSI_RED.getCode()+ "!!!%s пришел на ферму!!!\n" + textColours.ANSI_RESET.getCode(),this.name);
+            System.out.printf(textColours.ANSI_RED.getCode() + "Животное %s ранено %s (-%d hp)\n" + textColours.ANSI_RESET.getCode(), homeAnimal.name, this.name, this.power);
             homeAnimal.setHealth(homeAnimal.getHealth() - this.power);
         }
     }

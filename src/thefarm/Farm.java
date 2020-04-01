@@ -12,10 +12,19 @@ import static thefarm.Main.*;
 
 public class Farm
 {
-    public static HomeAnimal [] homeAnimals = new HomeAnimal[10];
+    public HomeAnimal [] homeAnimals = new HomeAnimal[10];
     static Random rand = new Random(new Date().getTime());
 
+    public HomeAnimal[] getHomeAnimals() {
+        return homeAnimals;
+    }
+
     public Farm()
+    {
+        factoryMethod();
+    }
+
+    public void factoryMethod()
     {
         int animalNum;
         HomeAnimal animal = null;
@@ -41,8 +50,7 @@ public class Farm
         }
     }
 
-
-    public static void printHomeAnimals()
+    public void printHomeAnimals()
     {
         for(HomeAnimal animal : homeAnimals)
         {
@@ -57,7 +65,7 @@ public class Farm
             System.out.println(farmer.toString());
             farmer.setResourcesCount(farmer.getResourcesCount() - 2); //Фермер тратит 2 единицы ресурсов
             WildAnimal wildAnimal1 = WildField.wildAnimals[rand.nextInt(3)]; //Приходит дикое животное (выбирается рандомно из массива с дикими животными)
-            HomeAnimal homeAnimal = Farm.homeAnimals[rand.nextInt(10)]; //домашнее животное (выбирается рандомно)
+            HomeAnimal homeAnimal = getHomeAnimals()[rand.nextInt(10)]; //домашнее животное (выбирается рандомно)
             if(!farmer.driveAwayWildAnimal(wildAnimal1,rand.nextBoolean())) //Иногда (рандомно) фермер может прогнать дикое животное
             {
                 if(wildAnimal1.escapeCounter < 3)
@@ -70,20 +78,20 @@ public class Farm
 
             if (wildAnimal1.escapeCounter > 3)
             {
-                System.out.printf(ANSI_RED + "%s больше не может прийти на ферму\n" + ANSI_RESET,wildAnimal1.name);
+                System.out.printf(textColours.ANSI_RED.getCode() + "%s больше не может прийти на ферму\n" + textColours.ANSI_RESET.getCode(),wildAnimal1.name);
                 wildAnimal1.canComeToTheFarm = false;
             }
-            for(HomeAnimal hm : Farm.homeAnimals)
+            for(HomeAnimal hm : getHomeAnimals())
             {
                 farmer.feedHomeAnimal(hm);
             }
 
             farmer.eatHomeAnimal();
-            System.out.printf(ANSI_CYAN + "Текущие ресурсы фермера: %d\n" + ANSI_RESET, farmer.getResourcesCount());
+            System.out.printf(textColours.ANSI_CYAN.getCode() + "Текущие ресурсы фермера: %d\n" + textColours.ANSI_RESET.getCode(), farmer.getResourcesCount());
             System.out.println("____________________________");
         }
 
-        System.out.printf(ANSI_RED + "GameOver" + ANSI_RESET);
+        System.out.printf(textColours.ANSI_RED.getCode() + "GameOver" + textColours.ANSI_RESET.getCode());
     }
 /*    День на ферме (метод passDay):
         1. Фермер тратит 2 единицы ресурсов (если ресурсов не осталось, игра заканчивается).
