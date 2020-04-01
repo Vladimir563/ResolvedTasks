@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public class Main
 {
-    public static void main(String[] args)
+    public static void main(String[] args) throws InterruptedException
     {
         Gym gym1 = new Gym();
         GymVisitor visitor1 = new GymVisitor("Oleg","Petrov", LocalDate.of(1991,3,23));
@@ -32,10 +32,17 @@ public class Main
         gym1.visitorReception("group classes",unlim);
         System.out.println("____________");
 
+        gym1.visitorReception("group classes",unlim);
+        System.out.println("____________");
+
         gym1.visitorReception("group classes",unlim2);
         System.out.println("____________");
 
         System.out.println(gym1.getDataBaseRegisteredVisitors().length);
+
+        System.out.println(gym1.toString());
+
+        gym1.closeGym();
 
         System.out.println(gym1.toString());
     }
@@ -52,20 +59,20 @@ public class Main
 //todo
         Каждый абонемент хранит дату регистрации (текущая дата) и дату окончания регистрации.
         Каждый абонемент хранит информацию о владельце. Данные о владельце: имя, фамилия, год рождения.
-
+//todo
         Фитнес содержит информацию об абонементах:
         которые зарегистрированы в данный момент в тренажерном зале;
         абонементах, которые зарегистрированы в бассейне;
         абонементах, которые зарегистрированы на групповых занятиях.
-
+//todo
         В каждой зоне (бассейн, тренажерный зал, групповые занятия) одновременно может быть зарегистрировано 20 абонентов.
-
+//todo
         Когда  фитнес клуб закрывается, клиенты покидают его.
-
+//todo
         Когда клиент приходит в фитнес клуб, он сообщает желаемую зону и показывает абонемент.
         Необходимо проверить может ли данный посетитель пройти в желаемую зону и пропустить его,
         если возможность существует; если посетитель не может пройти, необходимо сообщить ему причину.
-
+//todo
         Посетитель не может пройти, если время абонемента не соответсвует текущему времени,
         если он пытается пройти в зону, которая не разрешена по его абонементу,
         если в зоне нет свободных мест.

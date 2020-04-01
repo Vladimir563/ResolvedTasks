@@ -13,7 +13,7 @@ public class UnlimitedSubscription extends Subscription implements ISwimmingPool
     {
         super(mCount, gVisitor);
         startVisitTime = LocalTime.of(8,0);
-        endVisitTime = LocalTime.of(22,0);
+        endVisitTime = LocalTime.of(22,00);
         gymOptions [1] = "swimming pool";
         gymOptions [2] = "group classes";
         description = "Безлимитный";
