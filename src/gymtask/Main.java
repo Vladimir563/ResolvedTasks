@@ -4,7 +4,6 @@ import gymtask.subscriptionstype.DaySubscription;
 import gymtask.subscriptionstype.UnlimitedSubscription;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Arrays;
 
 public class Main
@@ -16,22 +15,41 @@ public class Main
         GymVisitor visitor2 = new GymVisitor("Ivan", "Petrov", LocalDate.of(1990,2,14));
         Subscription daily = new DaySubscription(3,visitor1);
         Subscription unlim = new UnlimitedSubscription(12,visitor2);
+
+        GymVisitor visitor3 = new GymVisitor("Petr", "Smirnov", LocalDate.of(1994,9,24));
+        Subscription unlim2 = new UnlimitedSubscription(5,visitor3);
+
+
         gym1.registerSubscription(daily);
         gym1.registerSubscription(unlim);
 
-        gym1.visitorReception(visitor2, "gym", unlim);
+        System.out.println(Arrays.toString(gym1.getDataBaseRegisteredVisitors()));
+        System.out.println(gym1.getDataBaseRegisteredVisitors().length);
 
+        gym1.visitorReception("group classes",daily);
+        System.out.println("____________");
+
+        gym1.visitorReception("group classes",unlim);
+        System.out.println("____________");
+
+        gym1.visitorReception("group classes",unlim2);
+        System.out.println("____________");
+
+        System.out.println(gym1.getDataBaseRegisteredVisitors().length);
+
+        System.out.println(gym1.toString());
     }
 }
 
 
 /*
 Задача «Фитнес»
-        В фитнес клубе есть три типа абонентов:
+//todo
+        В фитнес клубе есть три типа абонементов:
         Разовый. По разовому абонементу клиенты могут посещать бассейн и тренажерный зал с 8 до 22 часов.
         Дневной. По данному абонементу клиенты могут посещать тренажерный зал и групповые занятия (но не бассейн) с 8 до 16 часов.
         Полный. По данному абонементу клиенты могут посещать тренажерный зал, бассейн и групповые занятия с 8 до 22 часов.
-
+//todo
         Каждый абонемент хранит дату регистрации (текущая дата) и дату окончания регистрации.
         Каждый абонемент хранит информацию о владельце. Данные о владельце: имя, фамилия, год рождения.
 

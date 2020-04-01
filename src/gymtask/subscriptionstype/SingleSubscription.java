@@ -9,9 +9,9 @@ import java.util.Arrays;
 
 public class SingleSubscription extends Subscription implements ISwimmingPoolable
 {
-    public SingleSubscription(int mCount, GymVisitor gVisitor)
+    public SingleSubscription(GymVisitor gVisitor)
     {
-        super(mCount, gVisitor);
+        super(gVisitor);
         startVisitTime = LocalTime.of(8,0);
         endVisitTime = LocalTime.of(22,0);
         gymOptions[1] = "swimming pool";

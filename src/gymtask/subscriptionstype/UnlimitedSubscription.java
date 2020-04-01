@@ -19,5 +19,4 @@ public class UnlimitedSubscription extends Subscription implements ISwimmingPool
         description = "Безлимитный";
     }
 
-
 }

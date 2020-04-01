@@ -18,5 +18,4 @@ public class DaySubscription extends Subscription implements IGroupClassable
         gymOptions[1] = "group classes";
         description = "Дневной";
     }
-
 }

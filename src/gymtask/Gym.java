@@ -7,103 +7,107 @@ import gymtask.subscriptionstype.DaySubscription;
 import gymtask.subscriptionstype.SingleSubscription;
 import gymtask.subscriptionstype.UnlimitedSubscription;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
-import java.util.Objects;
 
 public class Gym
 {
     private IGroupClassable [] groupClassSubscriptions = new IGroupClassable[20];
-    private int groupClassCounter = 0;
     private IGymable [] gymSubscriptions = new IGymable[20];
-    private int gymCounter = 0;
     private ISwimmingPoolable [] swimmingPoolSubscriptions = new ISwimmingPoolable[20];
-    private int swimmingPoolCounter = 0;
-    private GymVisitor [] visitors = new GymVisitor[1];
-    private int visitorsCounter = 0;
+    private GymVisitor [] dataBaseRegisteredVisitors = new GymVisitor[1];
 
-    public void registerSubscription(Subscription subscription)
+    private int gymZoneRegisteredVisitorsCounter = 0; //данные о зарегистрированных местах в зонах
+    private int swimmingPoolZoneRegisteredVisitorsCounter = 0;
+    private int groupClassesZoneRegisteredVisitorsCounter = 0;
+    private int allVisitorsCounter = 0; //общее число зарегистрированных людей
+    private int currentVisitorsCounter = 0; //число людей в данный момент времени
+
+    private int currentGymZoneVisitorsCounter = 0; //число людей в данный момент времени в определнной зоне
+    private int currentSwimmingPoolZoneVisitorsCounter = 0;
+    private int currentGroupClassesVisitorsCounter = 0;
+
+    public int getCurrentGymZoneVisitorsCounter() {
+        return currentGymZoneVisitorsCounter;
+    }
+
+    public void setCurrentGymZoneVisitorsCounter(int currentGymZoneVisitorsCounter) {
+        this.currentGymZoneVisitorsCounter = currentGymZoneVisitorsCounter;
+    }
+
+    public int getCurrentSwimmingPoolZoneVisitorsCounter() {
+        return currentSwimmingPoolZoneVisitorsCounter;
+    }
+
+    public void setCurrentSwimmingPoolZoneVisitorsCounter(int currentSwimmingPoolZoneVisitorsCounter) {
+        this.currentSwimmingPoolZoneVisitorsCounter = currentSwimmingPoolZoneVisitorsCounter;
+    }
+
+    public int getCurrentGroupClassesVisitorsCounter() {
+        return currentGroupClassesVisitorsCounter;
+    }
+
+    public void setCurrentGroupClassesVisitorsCounter(int currentGroupClassesVisitorsCounter) {
+        this.currentGroupClassesVisitorsCounter = currentGroupClassesVisitorsCounter;
+    }
+
+    public int getCurrentVisitorsCounter() {
+        return currentVisitorsCounter;
+    }
+
+    public void setCurrentVisitorsCounter(int currentVisitorsCounter) {
+        this.currentVisitorsCounter = currentVisitorsCounter;
+    }
+
+    public void setDataBaseRegisteredVisitors(GymVisitor[] dataBaseRegisteredVisitors) {
+        this.dataBaseRegisteredVisitors = dataBaseRegisteredVisitors;
+    }
+
+    public GymVisitor[] getDataBaseRegisteredVisitors() {
+        return dataBaseRegisteredVisitors;
+    }
+
+    public int getGymZoneRegisteredVisitorsCounter() {
+        return gymZoneRegisteredVisitorsCounter;
+    }
+
+    public void setGymZoneRegisteredVisitorsCounter(int gymZoneRegisteredVisitorsCounter) {
+        this.gymZoneRegisteredVisitorsCounter = gymZoneRegisteredVisitorsCounter;
+    }
+
+    public int getSwimmingPoolZoneRegisteredVisitorsCounter() {
+        return swimmingPoolZoneRegisteredVisitorsCounter;
+    }
+
+    public void setSwimmingPoolZoneRegisteredVisitorsCounter(int swimmingPoolZoneRegisteredVisitorsCounter) {
+        this.swimmingPoolZoneRegisteredVisitorsCounter = swimmingPoolZoneRegisteredVisitorsCounter;
+    }
+
+    public int getGroupClassesZoneRegisteredVisitorsCounter() {
+        return groupClassesZoneRegisteredVisitorsCounter;
+    }
+
+    public void setGroupClassesZoneRegisteredVisitorsCounter(int groupClassesZoneRegisteredVisitorsCounter) {
+        this.groupClassesZoneRegisteredVisitorsCounter = groupClassesZoneRegisteredVisitorsCounter;
+    }
+
+    public void setAllVisitorsCounter(int allVisitorsCounter) {
+        this.allVisitorsCounter = allVisitorsCounter;
+    }
+
+    public int getAllVisitorsCounter() {
+        return allVisitorsCounter;
+    }
+
+    public void registerSubscription (Subscription subscription) //регистрация абонемента
     {
-        if(subscription instanceof IGroupClassable)
-        {
-            if(groupClassCounter >= 20)
-            {
-                System.out.println("Лимит подписок на групповые занятия исчерпан\n");
-                return;
-            }
-            groupClassSubscriptions[groupClassCounter] = (IGroupClassable) subscription;
-            groupClassCounter++;
-            for (int i = 0; i < visitors.length ; i++)
-            {
-                if(visitors[0] == null)
-                {
-                    visitors[0] = subscription.getVisitior();
-                    break;
-                }
-                else if(!visitors[i].equals(subscription.getVisitior()))
-                {
-                    GymVisitor [] newVisitors = new GymVisitor[visitors.length + 1];
-                    newVisitors[newVisitors.length - 1] = subscription.getVisitior();
-                }
-            }
-        }
 
-        if (subscription instanceof IGymable)
-        {
-            if(gymCounter >= 20)
-            {
-                System.out.println("Лимит подписок на тренажерный зал исчерпан\n");
-                return;
-            }
-            gymSubscriptions[gymCounter] = (IGymable) subscription;
-            gymCounter++;
-            for (int i = 0; i < visitors.length ; i++)
-            {
-                if(visitors[0] == null)
-                {
-                    visitors[0] = subscription.getVisitior();
-                    break;
-                }
-                else if(!visitors[i].equals(subscription.getVisitior()))
-                {
-                    GymVisitor [] newVisitors = new GymVisitor[visitors.length + 1];
-                    newVisitors[newVisitors.length - 1] = subscription.getVisitior();
-                }
-            }
-        }
+        distributeSubscription(subscription, "group classes", getGroupClassesZoneRegisteredVisitorsCounter(), groupClassSubscriptions);
 
-        if (subscription instanceof ISwimmingPoolable)
-        {
-            if(swimmingPoolCounter >= 20)
-            {
-                System.out.println("Лимит подписок на бассейн исчерпан\n");
-                return;
-            }
-            swimmingPoolSubscriptions[swimmingPoolCounter] = (ISwimmingPoolable) subscription;
-            swimmingPoolCounter++;
-            for (int i = 0; i < visitors.length ; i++)
-            {
-                if(visitors[0] == null)
-                {
-                    visitors[0] = subscription.getVisitior();
-                    break;
-                }
-                else if(!visitors[i].equals(subscription.getVisitior()))
-                {
-                    GymVisitor [] newVisitors = new GymVisitor[visitors.length + 1];
-                    newVisitors[newVisitors.length - 1] = subscription.getVisitior();
-                }
-            }
-        }
-    }
+        distributeSubscription(subscription, "gym", getGymZoneRegisteredVisitorsCounter(), gymSubscriptions);
 
-    public GymVisitor[] getVisitors() {
-        return visitors;
-    }
+        distributeSubscription(subscription, "swimming pool", getSwimmingPoolZoneRegisteredVisitorsCounter(), swimmingPoolSubscriptions);
 
-    public int getVisitorsCounter() {
-        return visitorsCounter;
     }
 
     @Override
@@ -111,47 +115,44 @@ public class Gym
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Gym gym = (Gym) o;
-        return groupClassCounter == gym.groupClassCounter &&
-                gymCounter == gym.gymCounter &&
-                swimmingPoolCounter == gym.swimmingPoolCounter &&
-                visitorsCounter == gym.visitorsCounter &&
+        return getAllVisitorsCounter() == gym.getAllVisitorsCounter() &&
                 Arrays.equals(groupClassSubscriptions, gym.groupClassSubscriptions) &&
                 Arrays.equals(gymSubscriptions, gym.gymSubscriptions) &&
                 Arrays.equals(swimmingPoolSubscriptions, gym.swimmingPoolSubscriptions) &&
-                Arrays.equals(visitors, gym.visitors);
+                Arrays.equals(getDataBaseRegisteredVisitors(), gym.getDataBaseRegisteredVisitors());
     }
 
+    //todo: переделать
     public void closeGym()
     {
-        visitors = new GymVisitor[]{};
+        dataBaseRegisteredVisitors = new GymVisitor[]{};
     }
 
-    public void visitorReception(GymVisitor visitor, String zone, Subscription subscription)
+    public void visitorReception(String zone, Subscription subscription) //обслуживание клиента
     {
-        if(visitors[0] == null)
+        if(getDataBaseRegisteredVisitors()[0] == null)
         {
-            visitors[0] = visitor;
+            getDataBaseRegisteredVisitors()[0] = subscription.getVisitor();
+            setDataBaseRegisteredVisitors(getDataBaseRegisteredVisitors());
         }
-        for (GymVisitor v : visitors)
+
+        if (Arrays.asList(getDataBaseRegisteredVisitors()).contains(subscription.getVisitor())) // если есть пользователь в базе
         {
-            if(v.equals(visitor))
+            if(subscription instanceof DaySubscription)
             {
-                if(subscription instanceof DaySubscription)
-                {
-                    helpMethod(subscription, zone);
-                }
-
-                if( subscription instanceof UnlimitedSubscription)
-                {
-                    helpMethod(subscription, zone);
-                }
-
-                if( subscription instanceof SingleSubscription)
-                {
-                    helpMethod(subscription, zone);
-                }
-                return;
+                checkAccess(subscription, zone);
             }
+
+            if( subscription instanceof UnlimitedSubscription)
+            {
+                checkAccess(subscription, zone);
+            }
+
+            if( subscription instanceof SingleSubscription)
+            {
+                checkAccess(subscription, zone);
+            }
+            return;
         }
         System.out.println("Данный посетитель не зарегистрирован!\n");
     }
@@ -167,16 +168,15 @@ public class Gym
     @Override
     public String toString() {
         return "Gym{" +
-                "groupClassSubscriptions=" + Arrays.toString(groupClassSubscriptions) +
-                ", groupClassCounter=" + groupClassCounter +
-                ", gymSubscriptions=" + Arrays.toString(gymSubscriptions) +
-                ", gymCounter=" + gymCounter +
-                ", swimmingPoolSubscriptions=" + Arrays.toString(swimmingPoolSubscriptions) +
-                ", swimmingPoolCounter=" + swimmingPoolCounter +
+                "allVisitorsCounter=" + allVisitorsCounter +
+                ", currentVisitorsCounter=" + currentVisitorsCounter +
+                ", currentGymZoneVisitorsCounter=" + currentGymZoneVisitorsCounter +
+                ", currentSwimmingPoolZoneVisitorsCounter=" + currentSwimmingPoolZoneVisitorsCounter +
+                ", currentGroupClassesVisitorsCounter=" + currentGroupClassesVisitorsCounter +
                 '}';
     }
 
-    public void helpMethod(Subscription subscription, String zone)
+    public void checkAccess(Subscription subscription, String zone) //проверка доступа клиента к зоне
     {
         LocalTime currentTime = LocalTime.now();
         for(String s : subscription.gymOptions)
@@ -184,18 +184,26 @@ public class Gym
             if(s != null && s.equals(zone) && currentTime.isAfter(subscription.startVisitTime) && currentTime.isBefore(subscription.endVisitTime))
             {
                 System.out.printf("Вы можете пройти в %s\n", zone);
-                visitorsCounter++;
+                setCurrentVisitorsCounter(getCurrentVisitorsCounter() + 1);
+                switch (zone)
+                {
+                    case "gym":
+                        setCurrentGymZoneVisitorsCounter(getCurrentGymZoneVisitorsCounter() + 1);
+                        break;
+                    case "swimming pool":
+                        setCurrentSwimmingPoolZoneVisitorsCounter(getCurrentSwimmingPoolZoneVisitorsCounter() + 1);
+                        break;
+                    case "group classes":
+                        setCurrentGroupClassesVisitorsCounter(getCurrentGroupClassesVisitorsCounter() + 1);
+                        break;
+                }
                 return;
             }
         }
-        for (int i = 0; i < subscription.gymOptions.length ; i++)
+
+        if(!Arrays.asList(subscription.gymOptions).contains(zone))
         {
-            if(subscription.gymOptions[i].equals(zone))
-            {
-                break;
-            }
-            else System.out.printf("Вы не можете пройти в %s (причина: абонемент не включает в себя \"%s\")\n",zone,zone);
-            break;
+            System.out.printf("Вы не можете пройти в %s (причина: абонемент не включает в себя \"%s\")\n",zone,zone);
         }
 
         if(!currentTime.isAfter(subscription.startVisitTime) || !currentTime.isBefore(subscription.endVisitTime))
@@ -208,6 +216,51 @@ public class Gym
         }*/
 
     }
+
+    public <T> void distributeSubscription (Subscription subscription, String type, int counter, T[] subscriptions)
+    {
+
+        if(Arrays.asList(subscription.gymOptions).contains(type)) // если подписка реализует интерфейс (содержит в массиве нужную зону)
+        {
+            if(counter >= 20)
+            {
+                System.out.printf("Лимит подписок на %s исчерпан\n",subscription.getClass().getName());
+                return;
+            }
+
+            subscriptions[counter] = (T)subscription;
+            switch (type)
+            {
+                case "gym":
+                    setGymZoneRegisteredVisitorsCounter(getGymZoneRegisteredVisitorsCounter() + 1);
+                    break;
+                case "group classes":
+                    setGroupClassesZoneRegisteredVisitorsCounter(getGroupClassesZoneRegisteredVisitorsCounter() + 1);
+                    break;
+                case "swimming pool":
+                    setSwimmingPoolZoneRegisteredVisitorsCounter(getSwimmingPoolZoneRegisteredVisitorsCounter() + 1);
+                    break;
+            }
+
+            if(getDataBaseRegisteredVisitors()[0] == null)
+            {
+                getDataBaseRegisteredVisitors()[0] = subscription.getVisitor();
+                setDataBaseRegisteredVisitors(getDataBaseRegisteredVisitors());
+                setAllVisitorsCounter(getAllVisitorsCounter()+1);
+            }
+            else if(!Arrays.asList(getDataBaseRegisteredVisitors()).contains(subscription.getVisitor()))
+            {
+                GymVisitor [] newVisitors = Arrays.copyOfRange(getDataBaseRegisteredVisitors(),0,getDataBaseRegisteredVisitors().length+1);
+                newVisitors[newVisitors.length-1] = subscription.getVisitor();
+                setDataBaseRegisteredVisitors(newVisitors);
+                setAllVisitorsCounter(getAllVisitorsCounter()+1);
+            }
+
+        }
+    }
 }
+
+
+
 
 

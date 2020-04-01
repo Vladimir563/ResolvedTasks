@@ -1,7 +1,6 @@
 package gymtask;
 
 import gymtask.interfaces.IGymable;
-import gymtask.interfaces.ISwimmingPoolable;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,10 +13,11 @@ public class Subscription implements IGymable
     protected String [] gymOptions = new String[3];
     protected LocalDate dateOfRegistration;
     protected LocalDate dateOfExclusion;
-    private GymVisitor visitior;
+    private GymVisitor visitor;
     private int monthCount;
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
@@ -28,23 +28,35 @@ public class Subscription implements IGymable
         this.dateOfRegistration = LocalDate.now();
         monthCount = mCount;
         this.dateOfExclusion = dateOfRegistration.plusMonths(monthCount);
-        this.visitior = gVisitor;
+        this.visitor = gVisitor;
         gymOptions[0] = "gym";
     }
 
-    public LocalDate getDateOfRegistration() {
+    public Subscription(GymVisitor visitor) //конструктор для разового абонемента
+    {
+        this.dateOfRegistration = LocalDate.now();
+        this.dateOfExclusion = dateOfRegistration.plusDays(1);
+        this.visitor = visitor;
+        gymOptions[0] = "gym";
+    }
+
+    public LocalDate getDateOfRegistration()
+    {
         return dateOfRegistration;
     }
 
-    public LocalDate getDateOfExclusion() {
+    public LocalDate getDateOfExclusion()
+    {
         return dateOfExclusion;
     }
 
-    public GymVisitor getVisitior() {
-        return visitior;
+    public GymVisitor getVisitor()
+    {
+        return visitor;
     }
 
-    public int getMonthCount() {
+    public int getMonthCount()
+    {
         return monthCount;
     }
 
@@ -56,9 +68,10 @@ public class Subscription implements IGymable
                 ", gymOptions=" + Arrays.toString(gymOptions) +
                 ", dateOfRegistration=" + dateOfRegistration +
                 ", dateOfExclusion=" + dateOfExclusion +
-                ", visitior=" + visitior +
+                ", visitior=" + visitor +
                 ", monthCount=" + monthCount +
                 '}';
     }
+
 }
 
