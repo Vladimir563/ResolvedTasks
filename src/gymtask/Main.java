@@ -1,50 +1,54 @@
 package gymtask;
 
-import gymtask.subscriptionstype.DaySubscription;
-import gymtask.subscriptionstype.UnlimitedSubscription;
+import gymtask.subscriptionstype.*;
+import sun.rmi.runtime.Log;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+
+enum gymZones
+{
+    GROUP_CLASSES_ZONES("group classes"), GYM_ZONES("gym"), SWIMMING_POOL_ZONES("swimming pool");
+    private String zone;
+    gymZones(String z)
+    {
+        zone = z;
+    }
+    public String getZone()
+    {
+        return zone;
+    }
+}
+
 
 public class Main
 {
     public static void main(String[] args) throws InterruptedException
     {
+
         Gym gym1 = new Gym();
+        Logger logger = new Logger(gym1);
+//todo: создали посетителей
         GymVisitor visitor1 = new GymVisitor("Oleg","Petrov", LocalDate.of(1991,3,23));
-        GymVisitor visitor2 = new GymVisitor("Ivan", "Petrov", LocalDate.of(1990,2,14));
-        Subscription daily = new DaySubscription(3,visitor1);
-        Subscription unlim = new UnlimitedSubscription(12,visitor2);
+        GymVisitor visitor2 = new GymVisitor("Ivan", "Vasilyev", LocalDate.of(1990,2,14));
+        GymVisitor visitor3 = new GymVisitor("Petr", "Antonov", LocalDate.of(2001,9,8));
+        GymVisitor visitor4 = new GymVisitor("Genry", "Abdula", LocalDate.of(1980,1,4));
+//todo: создали абонементы
+        Subscription v1Daily = new DaySubscription(3,visitor1);
+        Subscription v2Unlim = new UnlimitedSubscription(10,visitor2);
+        Subscription v3Single = new SingleSubscription(visitor3);
+        Subscription v4Daily = new DaySubscription(1,visitor4);
+//todo: регистрируем абонементы (не все)
+        gym1.registerSubscription(v1Daily);
+        gym1.registerSubscription(v2Unlim);
+        gym1.registerSubscription(v3Single);
+//todo: попытка доступа к зонам (имитация ресепшн)
+        gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v1Daily);
+        gym1.visitorReception(gymZones.SWIMMING_POOL_ZONES.getZone(),v2Unlim);
+        gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v3Single);
+        gym1.visitorReception(gymZones.SWIMMING_POOL_ZONES.getZone(),v4Daily);
 
-        GymVisitor visitor3 = new GymVisitor("Petr", "Smirnov", LocalDate.of(1994,9,24));
-        Subscription unlim2 = new UnlimitedSubscription(5,visitor3);
-
-
-        gym1.registerSubscription(daily);
-        gym1.registerSubscription(unlim);
-
-        System.out.println(Arrays.toString(gym1.getDataBaseRegisteredVisitors()));
-        System.out.println(gym1.getDataBaseRegisteredVisitors().length);
-
-        gym1.visitorReception("group classes",daily);
-        System.out.println("____________");
-
-        gym1.visitorReception("group classes",unlim);
-        System.out.println("____________");
-
-        gym1.visitorReception("group classes",unlim);
-        System.out.println("____________");
-
-        gym1.visitorReception("group classes",unlim2);
-        System.out.println("____________");
-
-        System.out.println(gym1.getDataBaseRegisteredVisitors().length);
-
-        System.out.println(gym1.toString());
-
-        gym1.closeGym();
-
-        System.out.println(gym1.toString());
+        logger.printVisitorsInfo();
     }
 }
 
@@ -76,7 +80,7 @@ public class Main
         Посетитель не может пройти, если время абонемента не соответсвует текущему времени,
         если он пытается пройти в зону, которая не разрешена по его абонементу,
         если в зоне нет свободных мест.
-
+//todo
         Реализовать возможность вывода информации о посетителях:
         сначала посетителях тренажерного зала, потом бассейна, потом групповых занятий.
         Выводить имя и фамилию посетителей в отсортированном порядке (сначала фамилия, потом имя).

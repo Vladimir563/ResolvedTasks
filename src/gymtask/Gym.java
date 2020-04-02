@@ -16,7 +16,8 @@ public class Gym
     private IGroupClassable [] groupClassSubscriptions = new IGroupClassable[20];
     private IGymable [] gymSubscriptions = new IGymable[20];
     private ISwimmingPoolable [] swimmingPoolSubscriptions = new ISwimmingPoolable[20];
-    private GymVisitor [] dataBaseRegisteredVisitors = new GymVisitor[1];
+
+    private GymVisitor [] dataBaseRegisteredVisitors = new GymVisitor[1]; //база данных зарегистрированных пользователей
 
     private int gymZoneRegisteredVisitorsCounter = 0; //данные о зарегистрированных местах в зонах
     private int swimmingPoolZoneRegisteredVisitorsCounter = 0;
@@ -327,6 +328,7 @@ public class Gym
             }
 
             subscriptions[counter] = (T)subscription;
+
             switch (type)
             {
                 case "gym":
@@ -353,9 +355,9 @@ public class Gym
                 setDataBaseRegisteredVisitors(newVisitors);
                 setAllVisitorsCounter(getAllVisitorsCounter()+1);
             }
-
         }
     }
+
 }
 
 
