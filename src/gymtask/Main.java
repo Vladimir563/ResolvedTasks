@@ -6,6 +6,28 @@ import sun.rmi.runtime.Log;
 import java.time.LocalDate;
 import java.util.Arrays;
 
+enum textColours
+{
+    ANSI_RESET ("\u001B[0m"),
+    ANSI_BLACK ("\u001B[30m"),
+    ANSI_RED ("\u001B[31m"),
+    ANSI_GREEN ("\u001B[32m"),
+    ANSI_YELLOW ("\u001B[33m"),
+    ANSI_BLUE ("\u001B[34m"),
+    ANSI_PURPLE ("\u001B[35m"),
+    ANSI_CYAN ("\u001B[36m"),
+    ANSI_WHITE ("\u001B[37m");
+    private String code;
+    textColours(String s)
+    {
+        this.code = s;
+    }
+    public String getCode()
+    {
+        return code;
+    }
+}
+
 enum gymZones
 {
     GROUP_CLASSES_ZONES("group classes"), GYM_ZONES("gym"), SWIMMING_POOL_ZONES("swimming pool");
@@ -31,7 +53,7 @@ public class Main
 //todo: создали посетителей
         GymVisitor visitor1 = new GymVisitor("Oleg","Petrov", LocalDate.of(1991,3,23));
         GymVisitor visitor2 = new GymVisitor("Ivan", "Vasilyev", LocalDate.of(1990,2,14));
-        GymVisitor visitor3 = new GymVisitor("Petr", "Antonov", LocalDate.of(2001,9,8));
+        GymVisitor visitor3 = new GymVisitor("Petrov", "Antonov", LocalDate.of(2001,9,8));
         GymVisitor visitor4 = new GymVisitor("Genry", "Abdula", LocalDate.of(1980,1,4));
 //todo: создали абонементы
         Subscription v1Daily = new DaySubscription(3,visitor1);
@@ -43,11 +65,19 @@ public class Main
         gym1.registerSubscription(v2Unlim);
         gym1.registerSubscription(v3Single);
 //todo: попытка доступа к зонам (имитация ресепшн)
+        gym1.visitorReception(gymZones.GROUP_CLASSES_ZONES.getZone(),v1Daily);
         gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v1Daily);
+        gym1.visitorReception(gymZones.SWIMMING_POOL_ZONES.getZone(),v1Daily);
+//todo: попытка пройти несколько раз по разовому абонементу
+        gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v3Single);
+        gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v3Single);
+        gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v3Single);
         gym1.visitorReception(gymZones.SWIMMING_POOL_ZONES.getZone(),v2Unlim);
         gym1.visitorReception(gymZones.GYM_ZONES.getZone(),v3Single);
         gym1.visitorReception(gymZones.SWIMMING_POOL_ZONES.getZone(),v4Daily);
-
+        logger.printVisitorsInfo();
+//todo: закрытие зала
+        gym1.closeGym();
         logger.printVisitorsInfo();
     }
 }

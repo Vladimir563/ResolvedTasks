@@ -1,5 +1,8 @@
 package gymtask;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Logger
 {
     private static Gym gym;
@@ -9,25 +12,30 @@ public class Logger
         this.gym = gym;
     }
 
+    public static void printCurrentVisitorInfo(GymVisitor visitor, String zone)
+    {
+        System.out.printf(textColours.ANSI_GREEN.getCode() + "Посетитель: %s %s; Вид занятия: %s; Дата и время посещения: %d:%d (%d.%d.%d)\n" + textColours.ANSI_RESET.getCode(),visitor.getSurname(),visitor.getName(),zone,
+                LocalTime.now().getHour(),LocalTime.now().getMinute(), LocalDate.now().getDayOfMonth(),LocalDate.now().getMonth().getValue(),LocalDate.now().getYear());
+    }
     public void printVisitorsInfo()
     {
-        if(gym.getCurrentGymZoneVisitors()[0] != null)
+        if(gym.getCurrentGymZoneVisitors() != null && gym.getCurrentGymZoneVisitors()[0] != null)
         {
             printAllVisitors(sortVisitorsBySurname(gym.getCurrentGymZoneVisitors()), "\"тренажерный зал\"");
         }
-        else System.out.println("Тренажерный зал пуст");
+        else System.out.println(textColours.ANSI_PURPLE.getCode() + "Тренажерный зал пуст" + textColours.ANSI_RESET.getCode());
 
-        if(gym.getCurrentSwimmingPoolZoneVisitors()[0] != null)
+        if(gym.getCurrentSwimmingPoolZoneVisitors() != null && gym.getCurrentSwimmingPoolZoneVisitors()[0] != null)
         {
             printAllVisitors(sortVisitorsBySurname(gym.getCurrentSwimmingPoolZoneVisitors()), "\"плавательный бассейн\"");
         }
-        else System.out.println("Плавательный бассейн пуст");
+        else System.out.println(textColours.ANSI_PURPLE.getCode() + "Плавательный бассейн пуст" + textColours.ANSI_RESET.getCode());
 
-        if(gym.getCurrentGroupClassesVisitors()[0] != null)
+        if(gym.getCurrentGroupClassesVisitors() != null && gym.getCurrentGroupClassesVisitors()[0] != null)
         {
             printAllVisitors(sortVisitorsBySurname(gym.getCurrentGroupClassesVisitors()), "\"групповые занятия\"");
         }
-        else System.out.println("Зал для групповых занятий пуст");
+        else System.out.println(textColours.ANSI_PURPLE.getCode() + "Зал для групповых занятий пуст" + textColours.ANSI_RESET.getCode());
     }
 
 
@@ -76,7 +84,7 @@ public class Logger
 
     private static void printAllVisitors (GymVisitor [] visitors, String zoneName)
     {
-        System.out.printf("Посетители зоны %s: ",zoneName);
+        System.out.printf(textColours.ANSI_CYAN.getCode() + "Посетители зоны %s: " + textColours.ANSI_RESET.getCode(),zoneName);
         String str = "";
         for(GymVisitor v : visitors)
         {
@@ -86,15 +94,3 @@ public class Logger
     }
 }
 
-/*      Реализовать возможность вывода информации о посетителях:
-        сначала посетителях тренажерного зала, потом бассейна, потом групповых занятий.
-        Выводить имя и фамилию посетителей в отсортированном порядке (сначала фамилия, потом имя).
-
-        Реализовать возможность выводить информацию в консоль каждый раз, когда клиент посещает фитнес клуб.
-        Информация для вывода:
-        Фамилия
-        Имя
-        Вид занятия
-        Дата и время посещения
-
-        Методы вывода информации в консоль можно описать в отдельном классе Logger (методы можно сделать static)*/

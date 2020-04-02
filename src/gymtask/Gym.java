@@ -8,6 +8,7 @@ import gymtask.subscriptionstype.DaySubscription;
 import gymtask.subscriptionstype.SingleSubscription;
 import gymtask.subscriptionstype.UnlimitedSubscription;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
 
@@ -32,6 +33,25 @@ public class Gym
     private int currentGymZoneVisitorsCounter = 0; //число людей в данный момент времени в определенной зоне
     private int currentSwimmingPoolZoneVisitorsCounter = 0;
     private int currentGroupClassesVisitorsCounter = 0;
+
+    private LocalTime currentTime = LocalTime.now();
+    private LocalDate currentDate = LocalDate.now();
+
+    public LocalTime getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(LocalTime currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public LocalDate getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(LocalDate currentDate) {
+        this.currentDate = currentDate;
+    }
 
     public int getCurrentGymZoneVisitorsCounter() {
         return currentGymZoneVisitorsCounter;
@@ -158,14 +178,14 @@ public class Gym
     {
         for (int i = 5; i > 0; i--)
         {
-            System.out.printf("\rКлуб закрывается через %d...",i);
+            System.out.printf(textColours.ANSI_YELLOW.getCode() + "\rКлуб закрывается через %d..." + textColours.ANSI_RESET.getCode(),i);
             Thread.sleep(1000);
         }
         setCurrentGroupClassesVisitors(null);
         setCurrentGymZoneVisitors(null);
         setCurrentSwimmingPoolZoneVisitors(null);
         setCurrentVisitorsCounter(0);
-        System.out.println("\nКлиенты покинули клуб");
+        System.out.println(textColours.ANSI_GREEN.getCode() + "\nКлиенты покинули клуб" + textColours.ANSI_RESET.getCode());
     }
 
     //todo: обслуживание клиента
@@ -195,7 +215,7 @@ public class Gym
             }
             return;
         }
-        System.out.println("Данный посетитель не зарегистрирован!\n");
+        System.out.println(textColours.ANSI_RED.getCode() + "Данный посетитель не зарегистрирован!\n" + textColours.ANSI_RESET.getCode());
     }
 
     @Override
@@ -212,37 +232,38 @@ public class Gym
     //todo: проверка доступа клиента к зоне
     public void checkAccess(Subscription subscription, String zone)
     {
-        LocalTime currentTime = LocalTime.now();
         switch (zone)
         {
             case "gym":
-                if(getCurrentGymZoneVisitors().length >= 20)
+                if(getCurrentGymZoneVisitors().length == 20)
                 {
-                    System.out.printf("В зоне %s нет свободных мест\n",zone);
+                    System.out.printf(textColours.ANSI_YELLOW.getCode() + "В зоне %s нет свободных мест\n" + textColours.ANSI_RESET.getCode(),zone);
                     return;
                 }
 
             case "swimming pool":
-                if(getCurrentSwimmingPoolZoneVisitors().length >= 20)
+                if(getCurrentSwimmingPoolZoneVisitors().length == 20)
                 {
-                    System.out.printf("В зоне %s нет свободных мест\n",zone);
+                    System.out.printf(textColours.ANSI_YELLOW.getCode() + "В зоне %s нет свободных мест\n" + textColours.ANSI_RESET.getCode(),zone);
                     return;
                 }
 
             case "group classes":
-                if(getCurrentGroupClassesVisitors().length >= 20)
+                if(getCurrentGroupClassesVisitors().length == 20)
                 {
-                    System.out.printf("В зоне %s нет свободных мест\n",zone);
+                    System.out.printf(textColours.ANSI_YELLOW.getCode() + "В зоне %s нет свободных мест\n" + textColours.ANSI_RESET.getCode(),zone);
                     return;
                 }
-
         }
 
         for(String s : subscription.gymOptions)
         {
-            if(s != null && s.equals(zone) && currentTime.isAfter(subscription.startVisitTime) && currentTime.isBefore(subscription.endVisitTime))
+            if(s != null && s.equals(zone) && getCurrentTime().isAfter(subscription.startVisitTime) && getCurrentTime().isBefore(subscription.endVisitTime) && getCurrentDate().isBefore(subscription.dateOfExclusion))
             {
-                System.out.printf("Вы можете пройти в %s\n", zone);
+                System.out.printf(textColours.ANSI_BLUE.getCode() + "Вы можете пройти в %s\n" + textColours.ANSI_RESET.getCode(), zone);
+                Logger.printCurrentVisitorInfo(subscription.getVisitor(),zone);
+                setCurrentDate(getCurrentDate().plusDays(1));
+
                 switch (zone)
                 {
                     case "gym":
@@ -303,14 +324,20 @@ public class Gym
             }
         }
 
+        if(getCurrentDate().isAfter(subscription.getDateOfExclusion()) || getCurrentDate().equals(subscription.getDateOfExclusion()))
+        {
+            System.out.printf(textColours.ANSI_RED.getCode() + "Срок действия вашего абонемента истек (%s)\n" + textColours.ANSI_RESET.getCode(), subscription.getDescription());
+            return;
+        }
+
         if(!Arrays.asList(subscription.gymOptions).contains(zone))
         {
-            System.out.printf("Вы не можете пройти в %s (причина: абонемент не включает в себя \"%s\")\n",zone,zone);
+            System.out.printf(textColours.ANSI_RED.getCode() + "Вы не можете пройти в %s (причина: абонемент не включает в себя \"%s\")\n" + textColours.ANSI_RESET.getCode(),zone,zone);
         }
 
         if(!currentTime.isAfter(subscription.startVisitTime) || !currentTime.isBefore(subscription.endVisitTime))
         {
-            System.out.printf("Вы не можете пройти в %s (причина: абонемент не действует в данное время %,d:%,d)\n",zone,currentTime.getHour(),currentTime.getMinute());
+            System.out.printf(textColours.ANSI_RED.getCode() + "Вы не можете пройти в %s (причина: абонемент не действует в данное время %,d:%,d)\n" + textColours.ANSI_RESET.getCode(),zone,currentTime.getHour(),currentTime.getMinute());
         }
 
     }
@@ -323,7 +350,7 @@ public class Gym
         {
             if(counter >= 20)
             {
-                System.out.printf("Лимит подписок на %s исчерпан\n",subscription.getClass().getName());
+                System.out.printf(textColours.ANSI_RED.getCode() + "Лимит подписок на %s исчерпан\n" + textColours.ANSI_RESET.getCode(),subscription.getClass().getName());
                 return;
             }
 
