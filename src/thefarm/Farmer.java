@@ -11,37 +11,31 @@ public class Farmer
 
     private boolean areWhereCanGivenAnimals;
 
-    private static Farm farm;
-
     private Farmer()
     {
     }
-
-    public static Farmer getInstance(Farm f) //получить экземпляр единственного фермера на ферме
+    public static Farmer getInstance() //получить экземпляр единственного фермера на ферме
     {
-        farm = f;
         if(farmer == null)
         {
             farmer = new Farmer();
         }
         return farmer;
     }
-
     public void packingResources(HomeAnimal animal) //собрать ресурсы
     {
         resourcesCount += 2;
         animal.setResourcesCount(animal.getResourcesCount() - 2);
     }
-
-    public void eatHomeAnimal() // сьесть домашнее животное
+    public void eatHomeAnimal(HomeAnimal [] animals) // сьесть домашнее животное
     {
         areWhereCanGivenAnimals = false;
-        for (int i = 0; i < farm.getHomeAnimals().length; i++)
+        for (int i = 0; i < animals.length; i++)
         {
-            if(farm.getHomeAnimals()[i] instanceof IGiveResourcesable && farm.getHomeAnimals()[i].isAnimalAlive() && farm.getHomeAnimals()[i].getResourcesCount() > 0)
+            if(animals[i] instanceof IGiveResourcesable && animals[i].isAnimalAlive() && animals[i].getResourcesCount() > 0)
             {
-                System.out.printf(textColours.ANSI_BLUE.getCode() + "Сбор ресурсов с животного %s (собрано %d)\n" + textColours.ANSI_RESET.getCode(),farm.getHomeAnimals()[i].name, 2);
-                packingResources(farm.getHomeAnimals()[i]);
+                System.out.printf(textColours.ANSI_BLUE.getCode() + "Сбор ресурсов с животного %s (собрано %d)\n" + textColours.ANSI_RESET.getCode(),animals[i].name, 2);
+                packingResources(animals[i]);
                 areWhereCanGivenAnimals = true;
             }
         }
@@ -49,26 +43,24 @@ public class Farmer
         if(!areWhereCanGivenAnimals)
         {
             System.out.println(textColours.ANSI_RED.getCode()+ "На ферме не осталось животных которые могут дать ресурс\n" + textColours.ANSI_RESET.getCode());
-            for (int i = 0; i < farm.getHomeAnimals().length; i++)
+            for (int i = 0; i < animals.length; i++)
             {
-                if(farm.getHomeAnimals()[i] instanceof ICanBeEatable && farm.getHomeAnimals()[i].isAnimalAlive())
+                if(animals[i] instanceof ICanBeEatable && animals[i].isAnimalAlive())
                 {
-                    resourcesCount += farm.getHomeAnimals()[i].getWeight();
-                    farm.getHomeAnimals()[i].weight = 0;
-                    farm.getHomeAnimals()[i].setAnimalAlive(false);
-                    System.out.printf(textColours.ANSI_RED.getCode() + "%s сьедено фермером\n" + textColours.ANSI_RESET.getCode(),farm.getHomeAnimals()[i].name );
+                    resourcesCount += animals[i].getWeight();
+                    animals[i].weight = 0;
+                    animals[i].setAnimalAlive(false);
+                    System.out.printf(textColours.ANSI_RED.getCode() + "%s сьедено фермером\n" + textColours.ANSI_RESET.getCode(),animals[i].name );
                     return;
                 }
             }
         }
     }
-
     @Override
     public String toString()
     {
         return textColours.ANSI_CYAN.getCode() + "Farmer's resourcesCount = " + resourcesCount + textColours.ANSI_RESET.getCode();
     }
-
     public boolean driveAwayWildAnimal(WildAnimal wildAnimal, boolean isCanDriveAway)
     {
         boolean isRunAway = false;
@@ -80,7 +72,6 @@ public class Farmer
         }
         return isRunAway;
     }
-
     public void feedHomeAnimal(HomeAnimal homeAnimal)
     {
         if(homeAnimal.isAnimalAlive() && homeAnimal.getHealth() > 0)
@@ -90,7 +81,6 @@ public class Farmer
         }
         else System.out.println(textColours.ANSI_RED.getCode() + "Нельзя кормить умершее животное" + textColours.ANSI_RESET.getCode());
     }
-
     public int getResourcesCount() {
         return resourcesCount;
     }

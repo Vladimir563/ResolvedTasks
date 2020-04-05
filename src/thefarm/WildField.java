@@ -12,9 +12,9 @@ public class WildField
 {
     static Random rand = new Random(new Date().getTime());
     public static WildAnimal [] wildAnimals = {
-    new Wolf("Wolf", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5),
-            new Fox("Fox", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5),
-            new Bear("Bear", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5)
+    new Wolf(Animals.WOLF.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5),
+            new Fox(Animals.FOX.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5),
+            new Bear(Animals.BEAR.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5)
     };
 
     public WildAnimal[] getWildAnimals() {

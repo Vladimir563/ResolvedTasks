@@ -12,7 +12,8 @@ import static thefarm.Main.*;
 
 public class Farm
 {
-    public HomeAnimal [] homeAnimals = new HomeAnimal[10];
+    public static HomeAnimal [] homeAnimals = new HomeAnimal[10];
+
     static Random rand = new Random(new Date().getTime());
 
     public HomeAnimal[] getHomeAnimals() {
@@ -21,10 +22,10 @@ public class Farm
 
     public Farm()
     {
-        factoryMethod();
+        Farm.factoryMethod();
     }
 
-    public void factoryMethod()
+    public static void factoryMethod()
     {
         int animalNum;
         HomeAnimal animal = null;
@@ -34,16 +35,16 @@ public class Farm
             switch (animalNum)
             {
                 case 0:
-                    animal = new Cow("Cow", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5);
+                    animal = new Cow(Animals.COW.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5);
                     break;
                 case 1:
-                    animal = new Chicken("Chicken", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5);
+                    animal = new Chicken(Animals.CHICKEN.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5);
                     break;
                 case 2:
-                    animal = new Rabbit("Rabbit", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, 0);
+                    animal = new Rabbit(Animals.RABBIT.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, 0);
                     break;
                 case 3:
-                    animal = new Cat("Cat", rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, 0);
+                    animal = new Cat(Animals.CAT.getAnimalName(), rand.nextInt(20 + 1) + 5, rand.nextInt(20 + 1) + 5,rand.nextInt(20 + 1) + 5, 0);
                     break;
             }
             homeAnimals[i] = animal;
@@ -86,7 +87,7 @@ public class Farm
                 farmer.feedHomeAnimal(hm);
             }
 
-            farmer.eatHomeAnimal();
+            farmer.eatHomeAnimal(homeAnimals);
             System.out.printf(textColours.ANSI_CYAN.getCode() + "Текущие ресурсы фермера: %d\n" + textColours.ANSI_RESET.getCode(), farmer.getResourcesCount());
             System.out.println("____________________________");
         }
