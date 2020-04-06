@@ -1,5 +1,6 @@
 package alpiniststask;
 
+
 import java.util.Arrays;
 
 enum mountains
@@ -48,6 +49,8 @@ public class Main
 
         Group g1 = new Group(true, new Alpinist[]{a1,a2}, m1);
         g1.addAlpinistInAGroup(a3);
+        System.out.println(Arrays.toString(g1.getAlpinists()));
+        System.out.println();
 
         Group g2 = new Group(false, new Alpinist[]{a3,a1}, m2);
         Group g3 = new Group(false, new Alpinist[]{a2,a3}, m3);
@@ -90,10 +93,10 @@ public class Main
         массив альпинистов;
         гора;
         должна быть возможность добавить альпиниста в группу, если набор ещё идёт
-
+//todo:
         В методе main создать:
         3 группы для восхождений на 3 различных горы.
         В первой группе 3 альпиниста (набор открыт)
         Во второй и третьей группах по 2 альпиниста (набор в эти группы закрыт)
-
+//todo:
         При выполнении задания необходимо обращать внимание на модификаторы доступа и выполнять все необходимые проверки.*/
