@@ -16,6 +16,20 @@ public class Subscription implements IGymable
     private GymVisitor visitor;
     private int monthCount;
 
+//todo: Region
+//переменные для возможности использования enum в дочерних классах (enum должны быть проинициализированны)
+    protected String groupClassesZonesZone = gymZones.GROUP_CLASSES_ZONES.getZone();
+    protected String gymClassesZonesZone = gymZones.GYM_ZONES.getZone();
+    protected String swimmingPoolClassesZonesZone = gymZones.SWIMMING_POOL_ZONES.getZone();
+//todo: endRegion
+
+//todo: Region
+//переменные для возможности использования enum в дочерних классах (enum должны быть проинициализированны)
+    protected String daySubDescription = descriptionsSubscribtions.DAILY.getDescription();
+    protected String singleSudDescription = descriptionsSubscribtions.SINGLE.getDescription();
+    protected String unlimitedSudDescription = descriptionsSubscribtions.UNLIMITED.getDescription();
+//todo: endRegion
+
     public String getDescription()
     {
         return description;
@@ -29,7 +43,7 @@ public class Subscription implements IGymable
         monthCount = mCount;
         this.dateOfExclusion = dateOfRegistration.plusMonths(monthCount);
         this.visitor = gVisitor;
-        gymOptions[0] = "gym";
+        gymOptions[0] = gymZones.GYM_ZONES.getZone();
     }
 
     public Subscription(GymVisitor visitor) //конструктор для разового абонемента
@@ -37,7 +51,7 @@ public class Subscription implements IGymable
         this.dateOfRegistration = LocalDate.now();
         this.dateOfExclusion = dateOfRegistration.plusDays(1);
         this.visitor = visitor;
-        gymOptions[0] = "gym";
+        gymOptions[0] = gymZones.GYM_ZONES.getZone();
     }
 
     public LocalDate getDateOfRegistration()

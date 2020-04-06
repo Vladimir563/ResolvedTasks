@@ -1,10 +1,8 @@
 package gymtask;
 
 import gymtask.subscriptionstype.*;
-import sun.rmi.runtime.Log;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 
 enum textColours
 {
@@ -42,12 +40,25 @@ enum gymZones
     }
 }
 
+enum descriptionsSubscribtions
+{
+    DAILY("Дневной"),SINGLE("Разовый"),UNLIMITED("Безлимитный");
+
+    private String description;
+    descriptionsSubscribtions(String des)
+    {
+        description = des;
+    }
+    public String getDescription() {
+        return description;
+    }
+}
+
 
 public class Main
 {
     public static void main(String[] args) throws InterruptedException
     {
-
         Gym gym1 = new Gym();
         Logger logger = new Logger(gym1);
 //todo: создали посетителей

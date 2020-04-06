@@ -3,9 +3,7 @@ package gymtask.subscriptionstype;
 import gymtask.GymVisitor;
 import gymtask.Subscription;
 import gymtask.interfaces.ISwimmingPoolable;
-
 import java.time.LocalTime;
-import java.util.Arrays;
 
 public class SingleSubscription extends Subscription implements ISwimmingPoolable
 {
@@ -14,8 +12,8 @@ public class SingleSubscription extends Subscription implements ISwimmingPoolabl
         super(gVisitor);
         startVisitTime = LocalTime.of(8,0);
         endVisitTime = LocalTime.of(22,0);
-        gymOptions[1] = "swimming pool";
-        description = "Разовый";
+        gymOptions[1] = swimmingPoolClassesZonesZone;
+        description = singleSudDescription;
     }
 
 }
