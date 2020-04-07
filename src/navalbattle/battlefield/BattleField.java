@@ -7,8 +7,7 @@ import navalbattle.battleships.OneDeckShip;
 import navalbattle.battleships.ThreeDecksShip;
 import navalbattle.battleships.TwoDecksShip;
 import navalbattle.shipsDescriptions;
-
-import javax.swing.*;
+import navalbattle.textColours;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
@@ -141,22 +140,22 @@ public class BattleField
                         {
                             if(shipsDescriptions.ONEDECKSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
                             {
-                                System.out.print("1  ");
+                                System.out.print(textColours.ANSI_BLUE.getCode() + "1  " + textColours.ANSI_RESET.getCode());
                             }
 
                             if(shipsDescriptions.TWODECKSSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
                             {
-                                System.out.print("2  ");
+                                System.out.print(textColours.ANSI_CYAN.getCode() + "2  " + textColours.ANSI_RESET.getCode());
                             }
 
                             if(shipsDescriptions.THREEDECKSSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
                             {
-                                System.out.print("3  ");
+                                System.out.print(textColours.ANSI_YELLOW.getCode() + "3  " + textColours.ANSI_RESET.getCode());
                             }
 
                             if(shipsDescriptions.FOURDECKSSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
                             {
-                                System.out.print("4  ");
+                                System.out.print(textColours.ANSI_GREEN.getCode() + "4  " + textColours.ANSI_RESET.getCode());
                             }
 
                             isDeckInCoord = true;
@@ -173,6 +172,6 @@ public class BattleField
             System.out.println();
         }
 
-        System.out.println(Arrays.toString(allShipsArray));
+//        System.out.println(Arrays.toString(allShipsArray));
     }
 }
