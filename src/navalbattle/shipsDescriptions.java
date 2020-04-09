@@ -2,7 +2,7 @@ package navalbattle;
 
 public enum shipsDescriptions
 {
-    ONEDECKSHIP("Однопалубный","OneDeckShip"),TWODECKSSHIP("Двухпалубный","TwoDecksShip"),THREEDECKSSHIP("Трехпалубный","ThreeDecksShip"),FOURDECKSSHIP("Четырехпалубный","FourDecksShip");
+    SHIP("Корабль","Ship"),ONEDECKSHIP("Однопалубный","OneDeckShip"),TWODECKSSHIP("Двухпалубный","TwoDecksShip"),THREEDECKSSHIP("Трехпалубный","ThreeDecksShip"),FOURDECKSSHIP("Четырехпалубный","FourDecksShip");
     private String shipNameRUS;
     private String shipNameENG;
 

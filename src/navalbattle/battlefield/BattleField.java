@@ -278,7 +278,7 @@ public class BattleField
         return false;
     }
 
-    public void showCurrentShipsOnMap() //распечатывает поле с расположением кораблей
+    public void showCurrentShipsOnMap(Ship [] ships, char symbol, String shootColor) //распечатывает поле с расположением кораблей
     {
         for (int i = 1; i < 2; i++)
         {
@@ -307,30 +307,36 @@ public class BattleField
                 }
                 else
                 {
-                    for (int k = 0; k < getAllShipsArray().length; k++)
+                    for (int k = 0; k < ships.length; k++)
                     {
-                        for(Deck deck : getAllShipsArray()[k].getDecks())
+                        for(Deck deck : ships[k].getDecks())
                         {
+                            if(deck == null) continue;
                             if(deck.getX()  == j-1 && deck.getY() == i)
                             {
-                                if(shipsDescriptions.ONEDECKSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                if(shipsDescriptions.SHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))
                                 {
-                                    System.out.print(textColours.ANSI_BLUE.getCode() + "1  " + textColours.ANSI_RESET.getCode());
+                                    System.out.print(shootColor + symbol + "  " + textColours.ANSI_RESET.getCode());
                                 }
 
-                                if(shipsDescriptions.TWODECKSSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                if(shipsDescriptions.ONEDECKSHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))
                                 {
-                                    System.out.print(textColours.ANSI_CYAN.getCode() + "2  " + textColours.ANSI_RESET.getCode());
+                                    System.out.print(textColours.ANSI_BLUE.getCode() + symbol + "  " + textColours.ANSI_RESET.getCode());
                                 }
 
-                                if(shipsDescriptions.THREEDECKSSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                if(shipsDescriptions.TWODECKSSHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))
                                 {
-                                    System.out.print(textColours.ANSI_YELLOW.getCode() + "3  " + textColours.ANSI_RESET.getCode());
+                                    System.out.print(textColours.ANSI_CYAN.getCode() + symbol + "  " + textColours.ANSI_RESET.getCode());
                                 }
 
-                                if(shipsDescriptions.FOURDECKSSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                if(shipsDescriptions.THREEDECKSSHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))
                                 {
-                                    System.out.print(textColours.ANSI_GREEN.getCode() + "4  " + textColours.ANSI_RESET.getCode());
+                                    System.out.print(textColours.ANSI_YELLOW.getCode() + symbol + "  " + textColours.ANSI_RESET.getCode());
+                                }
+
+                                if(shipsDescriptions.FOURDECKSSHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))
+                                {
+                                    System.out.print(textColours.ANSI_GREEN.getCode() + symbol + "  " + textColours.ANSI_RESET.getCode());
                                 }
 
                                 isDeckInCoord = true;
@@ -341,7 +347,7 @@ public class BattleField
 
                     if(!isDeckInCoord)
                     {
-                        System.out.print("*  ");
+                        System.out.print("●  ");
                     }
                 }
             }
@@ -375,7 +381,7 @@ public class BattleField
                 }
                 else
                 {
-                    System.out.print("*  ");
+                    System.out.print("●  ");
                 }
             }
             System.out.println();
