@@ -33,6 +33,6 @@ public class Ship
         return "Ship{" +
                 "decks=" + Arrays.toString(decks) +
                 ", description='" + description + '\'' +
-                '}';
+                "}\n";
     }
 }

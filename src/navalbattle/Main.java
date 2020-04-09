@@ -1,12 +1,12 @@
 package navalbattle;
 
-import com.sun.org.glassfish.gmbal.GmbalException;
 import navalbattle.battlefield.BattleField;
+import navalbattle.battleships.FourDecksShip;
 import navalbattle.battleships.OneDeckShip;
-import navalbattle.shipsDescriptions;
+import navalbattle.battleships.ThreeDecksShip;
+import navalbattle.battleships.TwoDecksShip;
 
-import java.util.Date;
-import java.util.Random;
+import java.util.Arrays;
 
 public class Main
 {
@@ -14,6 +14,24 @@ public class Main
     {
         Game game = new Game();
         game.start();
+/*        BattleField battleField = new BattleField();
+
+        Ship [] ships = new Ship[5];
+        ships[0] = new ThreeDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0), new Deck(0,0));
+        ships[1] = new TwoDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0));
+        ships[2] = new TwoDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0));
+        ships[3] = new FourDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0), new Deck(0,0),new Deck(0,0));
+        ships[4] = new OneDeckShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))));
+        System.out.println(Arrays.toString(ships));
+
+        System.out.println();
+
+        for(Ship ship : ships)
+        {
+            battleField.getShipWithCorrectCoords(ship,10);
+        }
+
+        System.out.println(Arrays.toString(ships));*/
     }
 }
 
