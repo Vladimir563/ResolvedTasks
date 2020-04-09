@@ -6,7 +6,6 @@ import navalbattle.battleships.OneDeckShip;
 import navalbattle.battleships.ThreeDecksShip;
 import navalbattle.battleships.TwoDecksShip;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
@@ -17,10 +16,16 @@ public class BattleField
     private ThreeDecksShip[] threeDeckShips = new ThreeDecksShip[2];
     private FourDecksShip[] fourDeckShips = new FourDecksShip[1];
     private Ship [] shipsWithSpecialCoords = new Ship[10];
-
+    private Ship [] allShipsArray = new Ship[10];
     private Deck [] decksOccupiedArr = new Deck[20];
+    private int fieldWidth = 10;
+
     private int i = 1;
     private int j = 1;
+
+    public int getFieldWidth() {
+        return fieldWidth;
+    }
 
     public int getI() {
         return i;
@@ -41,6 +46,14 @@ public class BattleField
     private int shipsCounter = 0;
 
     public boolean isDeckInCoord = false;
+
+    public Ship[] getAllShipsArray() {
+        return allShipsArray;
+    }
+
+    public void setAllShipsArray(Ship[] allShipsArray) {
+        this.allShipsArray = allShipsArray;
+    }
 
     public Ship[] getShipsWithSpecialCoords() {
         return shipsWithSpecialCoords;
@@ -120,92 +133,25 @@ public class BattleField
 
     }
 
-    public void fieldGenerate(int fieldWidth) //отрисовывает и создает поле битвы
+    public void fieldGenerate() //отрисовывает и создает поле битвы
     {
         fillShipArray(oneDeckShips);
         fillShipArray(twoDeckShips);
         fillShipArray(threeDeckShips);
         fillShipArray(fourDeckShips);
 
-        Ship [] allShipsArray = new Ship[10];
         System.arraycopy(getOneDeckShips(),0,allShipsArray,0,getOneDeckShips().length);
         System.arraycopy(getTwoDeckShips(),0,allShipsArray,getOneDeckShips().length,getTwoDeckShips().length);
         System.arraycopy(getThreeDeckShips(),0,allShipsArray,getOneDeckShips().length+getTwoDeckShips().length,getThreeDeckShips().length);
         System.arraycopy(getFourDeckShips(),0,allShipsArray,getOneDeckShips().length + getTwoDeckShips().length + getThreeDeckShips().length,getFourDeckShips().length);
 
-        allShipsArray = returnShipsArrWithCorrectCoords(allShipsArray,fieldWidth);
-
-        for (int i = 1; i < 2; i++)
-        {
-            for (int j = 0; j < fieldWidth + 1; j++)
-            {
-                if(j == fieldWidth)
-                {
-                    System.out.print(" " + j);
-                    continue;
-                }
-                System.out.printf("%2d ", j);
-            }
-            System.out.println();
-        }
-
-        for (int i = 0; i < fieldWidth + 1; i++)
-        {
-            if(i == 0) continue;
-
-            for (int j = 1; j < fieldWidth + 2; j++)
-            {
-                isDeckInCoord = false;
-                if(j <= 1)
-                {
-                    System.out.printf("%2d  ", i);
-                }
-                else
-                {
-                    for (int k = 0; k < allShipsArray.length; k++)
-                    {
-                        for(Deck deck : allShipsArray[k].getDecks())
-                        {
-                            if(deck.getX()  == j-1 && deck.getY() == i)
-                            {
-                                if(shipsDescriptions.ONEDECKSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
-                                {
-                                    System.out.print(textColours.ANSI_BLUE.getCode() + "1  " + textColours.ANSI_RESET.getCode());
-                                }
-
-                                if(shipsDescriptions.TWODECKSSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
-                                {
-                                    System.out.print(textColours.ANSI_CYAN.getCode() + "2  " + textColours.ANSI_RESET.getCode());
-                                }
-
-                                if(shipsDescriptions.THREEDECKSSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
-                                {
-                                    System.out.print(textColours.ANSI_YELLOW.getCode() + "3  " + textColours.ANSI_RESET.getCode());
-                                }
-
-                                if(shipsDescriptions.FOURDECKSSHIP.getShipNameENG().equals(allShipsArray[k].getClass().getSimpleName()))
-                                {
-                                    System.out.print(textColours.ANSI_GREEN.getCode() + "4  " + textColours.ANSI_RESET.getCode());
-                                }
-
-                                isDeckInCoord = true;
-                                break;
-                            }
-                        }
-
-                    }
-
-                    if(!isDeckInCoord)
-                    {
-                        System.out.print("*  ");
-                    }
-                }
-            }
-            System.out.println();
-        }
+        makeShipsArrWithCorrectCoords(getAllShipsArray());
+        System.out.println("________________________________");
+        printField();
+        System.out.println("________________________________");
     }
 
-    public Ship getShipWithCorrectCoords(Ship battleShip, int fieldWidth) //возвращает корабль с корректными координатами (если нельзя построить корабль с текущими координатами)
+    public Ship getShipWithCorrectCoords(Ship battleShip) //возвращает корабль с корректными координатами (если нельзя построить корабль с текущими координатами)
     {
         Random rand = new Random(new Date().getTime());
 
@@ -213,7 +159,7 @@ public class BattleField
 
         while(isCoordsWrong) //проверяем корректны ли координаты заданные рандомно
         {
-            if((battleShip.getDecks()[0].getX() + (battleShip.getDecks().length - 1)) <= fieldWidth) // если по координате х есть место для остальных палуб корабля
+            if((battleShip.getDecks()[0].getX() + (battleShip.getDecks().length - 1)) <= getFieldWidth()) // если по координате х есть место для остальных палуб корабля
             {
                 int counterX = 0;
                 for(Deck deck : battleShip.getDecks())
@@ -224,7 +170,7 @@ public class BattleField
                 }
                 isCoordsWrong = false;
             }
-            else if ((battleShip.getDecks()[0].getY() + (battleShip.getDecks().length - 1)) <= fieldWidth) // иначе если по координате у есть место для остальных палуб корабля
+            else if ((battleShip.getDecks()[0].getY() + (battleShip.getDecks().length - 1)) <= getFieldWidth()) // иначе если по координате у есть место для остальных палуб корабля
             {
                 int counterY = 0;
                 for(Deck deck : battleShip.getDecks())
@@ -244,17 +190,17 @@ public class BattleField
         return battleShip;
     }
 
-    public Ship [] returnShipsArrWithCorrectCoords(Ship [] battleShips, int fieldWidth) // возвращает массив кораблей с непересекающимися корректными для построения координатами
+    public void makeShipsArrWithCorrectCoords(Ship [] battleShips) // возвращает массив кораблей с непересекающимися корректными для построения координатами
     {
         Ship [] newArrShips = new Ship[battleShips.length];
 
-        newArrShips [battleShips.length - 1] = getShipWithCorrectCoords(battleShips[battleShips.length - 1],fieldWidth);
+        newArrShips [battleShips.length - 1] = getShipWithCorrectCoords(battleShips[battleShips.length - 1]);
         System.arraycopy(newArrShips [battleShips.length - 1].getDecks(),0,decksOccupiedArr,0,newArrShips [battleShips.length - 1].getDecks().length);
         int counter = 0;
         int tryingToFindCoordCount = 0;
         for (int i = newArrShips.length - 2; i >= 0; i--)
         {
-            newArrShips[i] = getShipWithCorrectCoords(battleShips[i],fieldWidth);
+            newArrShips[i] = getShipWithCorrectCoords(battleShips[i]);
 
             for(int k = 0; k < newArrShips[i].getDecks().length; k++)
             {
@@ -262,7 +208,7 @@ public class BattleField
                 if(isDeckContainsInArr(newArrShips[i].getDecks()[k],decksOccupiedArr))
                 {
                     newArrShips[i] = getShipWithRandomCoords(newArrShips[i], tryingToFindCoordCount);
-                    newArrShips[i] = getShipWithCorrectCoords(battleShips[i],fieldWidth);
+                    newArrShips[i] = getShipWithCorrectCoords(battleShips[i]);
                     tryingToFindCoordCount++;
                     k = -1;
                     break mark;
@@ -274,8 +220,6 @@ public class BattleField
             counter += newArrShips [i+1].getDecks().length;
             System.arraycopy(newArrShips [i].getDecks(),0,decksOccupiedArr,counter,newArrShips [i].getDecks().length);
         }
-
-        return newArrShips;
     }
 
     public Ship getShipWithRandomCoords(Ship ship, int tryingToFindCoordCount)
@@ -332,5 +276,109 @@ public class BattleField
             }
         }
         return false;
+    }
+
+    public void showCurrentShipsOnMap() //распечатывает поле с расположением кораблей
+    {
+        for (int i = 1; i < 2; i++)
+        {
+            for (int j = 0; j < getFieldWidth() + 1; j++)
+            {
+                if(j == getFieldWidth())
+                {
+                    System.out.print(" " + j);
+                    continue;
+                }
+                System.out.printf("%2d ", j);
+            }
+            System.out.println();
+        }
+
+        for (int i = 0; i < getFieldWidth() + 1; i++)
+        {
+            if(i == 0) continue;
+
+            for (int j = 1; j < getFieldWidth() + 2; j++)
+            {
+                isDeckInCoord = false;
+                if(j <= 1)
+                {
+                    System.out.printf("%2d  ", i);
+                }
+                else
+                {
+                    for (int k = 0; k < getAllShipsArray().length; k++)
+                    {
+                        for(Deck deck : getAllShipsArray()[k].getDecks())
+                        {
+                            if(deck.getX()  == j-1 && deck.getY() == i)
+                            {
+                                if(shipsDescriptions.ONEDECKSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                {
+                                    System.out.print(textColours.ANSI_BLUE.getCode() + "1  " + textColours.ANSI_RESET.getCode());
+                                }
+
+                                if(shipsDescriptions.TWODECKSSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                {
+                                    System.out.print(textColours.ANSI_CYAN.getCode() + "2  " + textColours.ANSI_RESET.getCode());
+                                }
+
+                                if(shipsDescriptions.THREEDECKSSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                {
+                                    System.out.print(textColours.ANSI_YELLOW.getCode() + "3  " + textColours.ANSI_RESET.getCode());
+                                }
+
+                                if(shipsDescriptions.FOURDECKSSHIP.getShipNameENG().equals(getAllShipsArray()[k].getClass().getSimpleName()))
+                                {
+                                    System.out.print(textColours.ANSI_GREEN.getCode() + "4  " + textColours.ANSI_RESET.getCode());
+                                }
+
+                                isDeckInCoord = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(!isDeckInCoord)
+                    {
+                        System.out.print("*  ");
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public void printField() // распечатывает пустое поле
+    {
+        for (int i = 1; i < 2; i++)
+        {
+            for (int j = 0; j < getFieldWidth() + 1; j++)
+            {
+                if(j == getFieldWidth())
+                {
+                    System.out.print(" " + j);
+                    continue;
+                }
+                System.out.printf("%2d ", j);
+            }
+            System.out.println();
+        }
+
+        for (int k = 1; k < getFieldWidth() + 1; k++)
+        {
+            for (int j = 1; j < getFieldWidth() + 2; j++)
+            {
+                if(j <= 1)
+                {
+                    System.out.printf("%2d  ", k);
+                }
+                else
+                {
+                    System.out.print("*  ");
+                }
+            }
+            System.out.println();
+        }
     }
 }
