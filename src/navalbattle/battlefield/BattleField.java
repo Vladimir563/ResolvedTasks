@@ -278,7 +278,7 @@ public class BattleField
         return false;
     }
 
-    public void showCurrentShipsOnMap(Ship [] ships, char symbol, String shootColor) //распечатывает поле с расположением кораблей
+    public void showCurrentShipsOnMap(Ship [] ships, char symbol) //распечатывает поле с расположением кораблей
     {
         for (int i = 1; i < 2; i++)
         {
@@ -316,7 +316,7 @@ public class BattleField
                             {
                                 if(shipsDescriptions.SHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))
                                 {
-                                    System.out.print(shootColor + symbol + "  " + textColours.ANSI_RESET.getCode());
+                                    System.out.print(symbol + "  ");
                                 }
 
                                 if(shipsDescriptions.ONEDECKSHIP.getShipNameENG().equals(ships[k].getClass().getSimpleName()))

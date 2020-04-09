@@ -56,9 +56,8 @@ public class Game
     public void start()
     {
         BattleField battleField = new BattleField();
+        System.out.println("Морской бой начался!");
         battleField.fieldGenerate();
-        battleField.showCurrentShipsOnMap(battleField.getAllShipsArray(),'□',textColours.ANSI_WHITE.getCode());
-
         LocalTime time = LocalTime.now().plusSeconds(30);
         while(LocalTime.now().isBefore(time))
         {
@@ -69,20 +68,22 @@ public class Game
             personsMove(opponentsMove(),battleField,opponentsShips);
         }
 
-        System.out.println("Время вышло! Игра окончена");
+        System.out.println("Время вышло! Игра окончена\n");
 
         if(Game.usersScore > Game.opponentScore)
         {
-            System.out.println("✔Вы выйграли! Поздравляем!✔");
+            System.out.println("✔Вы выйграли! Поздравляем!✔\n");
         }
         else if (Game.usersScore < Game.opponentScore)
         {
-            System.out.println("†Вы проиграли...†");
+            System.out.println("†Вы проиграли...†\n");
         }
         else
         {
-            System.out.println("☆☆☆Ничья!☆☆☆");
+            System.out.println("☆☆☆Ничья!☆☆☆\n");
         }
+        System.out.println("Расположение кораблей");
+        battleField.showCurrentShipsOnMap(battleField.getAllShipsArray(),'□');
     }
 
 
@@ -153,7 +154,6 @@ public class Game
                 if(d.getX() == deck1.getX() && d.getY() == deck1.getY())
                 {
                     isHit = true;
-                    shootColor = textColours.ANSI_RED.getCode();
                     break;
                 }
             }
@@ -175,8 +175,6 @@ public class Game
         {
             System.out.println("Промах!");
         }
-
-        battleField.showCurrentShipsOnMap(ships,'x',shootColor);
-        shootColor = textColours.ANSI_WHITE.getCode();
+        battleField.showCurrentShipsOnMap(ships,'x');
     }
 }
