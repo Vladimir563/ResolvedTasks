@@ -135,7 +135,6 @@ public class BattleField
 
         allShipsArray = returnShipsArrWithCorrectCoords(allShipsArray,fieldWidth);
 
-        System.out.println(Arrays.toString(allShipsArray));
         for (int i = 1; i < 2; i++)
         {
             for (int j = 0; j < fieldWidth + 1; j++)
