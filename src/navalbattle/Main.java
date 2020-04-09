@@ -14,24 +14,6 @@ public class Main
     {
         Game game = new Game();
         game.start();
-/*        BattleField battleField = new BattleField();
-
-        Ship [] ships = new Ship[5];
-        ships[0] = new ThreeDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0), new Deck(0,0));
-        ships[1] = new TwoDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0));
-        ships[2] = new TwoDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0));
-        ships[3] = new FourDecksShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))), new Deck(0,0), new Deck(0,0),new Deck(0,0));
-        ships[4] = new OneDeckShip(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))));
-        System.out.println(Arrays.toString(ships));
-
-        System.out.println();
-
-        for(Ship ship : ships)
-        {
-            battleField.getShipWithCorrectCoords(ship,10);
-        }
-
-        System.out.println(Arrays.toString(ships));*/
     }
 }
 

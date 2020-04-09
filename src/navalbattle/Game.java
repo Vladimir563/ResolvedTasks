@@ -1,9 +1,11 @@
 package navalbattle;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import navalbattle.battlefield.BattleField;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Game
@@ -16,6 +18,8 @@ public class Game
     private int counterUserMoves = 0;
     private int counterOpponentsMoves = 0;
     private String shootColor = textColours.ANSI_WHITE.getCode();
+    public static int usersScore = 0;
+    public static int opponentScore = 0;
 
     public Deck[] getOpponentsMove() {
         return opponentsMove;
@@ -59,12 +63,26 @@ public class Game
         while(LocalTime.now().isBefore(time))
         {
 //todo: ход игрока
-            personsMove(getCoordinatsFromPlayer(),battleField,usersMove,usersShips);
+            personsMove(getCoordinatsFromPlayer(),battleField,usersShips);
 
 //todo: ход противника
-            personsMove(opponentsMove(),battleField,opponentsMove,opponentsShips);
+            personsMove(opponentsMove(),battleField,opponentsShips);
         }
+
         System.out.println("Время вышло! Игра окончена");
+
+        if(Game.usersScore > Game.opponentScore)
+        {
+            System.out.println("✔Вы выйграли! Поздравляем!✔");
+        }
+        else if (Game.usersScore < Game.opponentScore)
+        {
+            System.out.println("†Вы проиграли...†");
+        }
+        else
+        {
+            System.out.println("☆☆☆Ничья!☆☆☆");
+        }
     }
 
 
@@ -121,8 +139,10 @@ public class Game
         return deck;
     }
 
-    public void personsMove(Deck p, BattleField battleField, Deck [] decks, Ship [] ships)
+    public void personsMove(Deck p, BattleField battleField, Ship [] ships)
     {
+        String userCode = usersShips.toString();
+        String opponentCode = opponentsShips.toString();
         boolean isHit = false;
         Deck d = p;
         System.out.println();
@@ -142,6 +162,14 @@ public class Game
         if(isHit)
         {
             System.out.println("Попадание!");
+            if(ships.toString().equals(opponentCode))
+            {
+                Game.opponentScore = Game.opponentScore + 1;
+            }
+            if(ships.toString().equals(userCode))
+            {
+                Game.usersScore = Game.usersScore + 1;
+            }
         }
         else
         {
