@@ -7,10 +7,12 @@ import java.util.Random;
 
 public class BattleField
 {
+//todo: массивы всех кораблей
     private OneDeckShip [] oneDeckShips;
     private TwoDecksShip[] twoDeckShips;
     private ThreeDecksShip[] threeDeckShips;
     private FourDecksShip[] fourDeckShips;
+//todo: end
     private Ship [] allTypesOfShips; //общий массив кораблей
     private int fieldWidth; //размер поля
 

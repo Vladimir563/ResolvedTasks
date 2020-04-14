@@ -1,9 +1,6 @@
 package navalbattle;
 
 import navalbattle.battlefield.BattleField;
-import navalbattle.battleships.*;
-
-import java.util.Arrays;
 
 public class Main
 {
@@ -18,6 +15,7 @@ public class Main
         System.out.println(field.getAllTypesOfShips()[9].toString());
         field.setupCoordsAllDecksInShip(field.getAllTypesOfShips()[9]);
         System.out.println(field.getAllTypesOfShips()[9].toString());
+        field.printBattleField();
 
     }
 }
