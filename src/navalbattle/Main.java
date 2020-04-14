@@ -13,9 +13,12 @@ public class Main
         game.start();*/
 
         BattleField field = new BattleField(10);
-        System.out.println(Arrays.toString(field.getAllTypesOfShips()));
-        field.setupFirstDeckCoords(field.getAllTypesOfShips()[0]);
-        System.out.println(field.getAllTypesOfShips()[0]);
+        System.out.println(field.toString());
+        field.setupFirstDeckCoords(field.getAllTypesOfShips()[9]);
+        System.out.println(field.getAllTypesOfShips()[9].toString());
+        field.setupCoordsAllDecksInShip(field.getAllTypesOfShips()[9]);
+        System.out.println(field.getAllTypesOfShips()[9].toString());
+
     }
 }
 

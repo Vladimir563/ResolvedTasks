@@ -1,7 +1,7 @@
 package navalbattle.battlefield;
 
 import navalbattle.battleships.*;
-
+import navalbattle.Logger;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -18,17 +18,17 @@ public class BattleField
     {
         this.fieldWidth = fieldWidth;
 //todo: создание массивов кораблей при создании обьекта поля битвы
-        oneDeckShips = new OneDeckShip[]{new OneDeckShip(new Deck(0,0)), new OneDeckShip(new Deck(0,0)), new OneDeckShip(new Deck(0,0)), new OneDeckShip(new Deck(0,0))};
-        twoDeckShips = new TwoDecksShip[]{new TwoDecksShip(new Deck(0,0),new Deck(0,0)),new TwoDecksShip(new Deck(0,0),new Deck(0,0)),new TwoDecksShip(new Deck(0,0),new Deck(0,0))};
-        threeDeckShips = new ThreeDecksShip[]{new ThreeDecksShip(new Deck(0,0), new Deck(0,0), new Deck(0,0)),new ThreeDecksShip(new Deck(0,0), new Deck(0,0), new Deck(0,0))};
-        fourDeckShips = new FourDecksShip[]{new FourDecksShip(new Deck(0,0),new Deck(0,0),new Deck(0,0), new Deck(0,0))};
+        this.oneDeckShips = new OneDeckShip[]{new OneDeckShip(new Deck(0,0)), new OneDeckShip(new Deck(0,0)), new OneDeckShip(new Deck(0,0)), new OneDeckShip(new Deck(0,0))};
+        this.twoDeckShips = new TwoDecksShip[]{new TwoDecksShip(new Deck(0,0),new Deck(0,0)),new TwoDecksShip(new Deck(0,0),new Deck(0,0)),new TwoDecksShip(new Deck(0,0),new Deck(0,0))};
+        this.threeDeckShips = new ThreeDecksShip[]{new ThreeDecksShip(new Deck(0,0), new Deck(0,0), new Deck(0,0)),new ThreeDecksShip(new Deck(0,0), new Deck(0,0), new Deck(0,0))};
+        this.fourDeckShips = new FourDecksShip[]{new FourDecksShip(new Deck(0,0),new Deck(0,0),new Deck(0,0), new Deck(0,0))};
 
 //todo: копирование всех кораблей в один массив
-        allTypesOfShips = new Ship[oneDeckShips.length + twoDeckShips.length + threeDeckShips.length + fourDeckShips.length];
+        this.allTypesOfShips = new Ship[oneDeckShips.length + twoDeckShips.length + threeDeckShips.length + fourDeckShips.length];
         System.arraycopy(oneDeckShips, 0, allTypesOfShips,0,oneDeckShips.length);
         System.arraycopy(twoDeckShips,0,allTypesOfShips,oneDeckShips.length,twoDeckShips.length);
         System.arraycopy(threeDeckShips,0,allTypesOfShips,oneDeckShips.length + twoDeckShips.length,threeDeckShips.length);
-        System.arraycopy(fourDeckShips,0,allTypesOfShips,oneDeckShips.length + twoDeckShips.length + fourDeckShips.length, fourDeckShips.length);
+        System.arraycopy(fourDeckShips,0,allTypesOfShips,oneDeckShips.length + twoDeckShips.length + threeDeckShips.length, fourDeckShips.length);
     }
 
     public Ship[] getAllTypesOfShips() {
@@ -71,6 +71,9 @@ public class BattleField
         this.fourDeckShips = fourDeckShips;
     }
 
+    public int getFieldWidth() {
+        return fieldWidth;
+    }
 
     public Ship setupFirstDeckCoords(Ship ship) //возвращает корабль с заданными координатами первой палубы
     {
@@ -109,20 +112,43 @@ public class BattleField
         else return false;
     }
 
-    public void battleFieldCreate()
+    public Ship setupCoordsAllDecksInShip(Ship ship) // устанавливаем координаты для остальных палуб корабля
     {
-
+        if(ship.isHorizontalPos()) //если корабль можно поставить горизонтально
+        {
+            for (int i = 1; i < ship.getDecks().length; i++)
+            {
+                ship.getDecks()[i].setX(ship.getDecks()[0].getX() + i);
+                ship.getDecks()[i].setY(ship.getDecks()[0].getX());
+            }
+        }
+        else //иначе ставим корабль вертикально
+        {
+            for (int i = 1; i < ship.getDecks().length; i++)
+            {
+                ship.getDecks()[i].setY(ship.getDecks()[0].getY() + i);
+                ship.getDecks()[i].setY(ship.getDecks()[0].getY());
+            }
+        }
+        return ship;
     }
+
+    public void printBattleField() //вывод на консоль поля битвы
+    {
+        Logger logger = new Logger();
+        logger.printHorizontalPart(getFieldWidth());
+        logger.printVerticalPart(getFieldWidth());
+    }
+
 
     @Override
     public String toString() {
         return "BattleField{" +
-                "oneDeckShips=" + Arrays.toString(oneDeckShips) +
-                ", twoDeckShips=" + Arrays.toString(twoDeckShips) +
-                ", threeDeckShips=" + Arrays.toString(threeDeckShips) +
-                ", fourDeckShips=" + Arrays.toString(fourDeckShips) +
-                ", allTypesOfShips=" + Arrays.toString(allTypesOfShips) +
-                ", fieldWidth=" + fieldWidth +
+                "oneDeckShips=" + Arrays.toString(oneDeckShips) + "\n" +
+                ", twoDeckShips=" + Arrays.toString(twoDeckShips) + "\n" +
+                ", threeDeckShips=" + Arrays.toString(threeDeckShips) + "\n" +
+                ", fourDeckShips=" + Arrays.toString(fourDeckShips) + "\n" +
+                ", allTypesOfShips=" + Arrays.toString(allTypesOfShips) + "\n" +
                 '}';
     }
 }
