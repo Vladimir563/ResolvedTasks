@@ -14,6 +14,8 @@ public class BattleField
     private FourDecksShip[] fourDeckShips;
 //todo: end
     private Ship [] allTypesOfShips; //общий массив кораблей
+    private UserMove [] usersMoves = new UserMove[100]; //массив ходов пользователя
+    private Deck [] arrayOfFilledCells = new Deck[20]; //массив всех заполненных (не пустых) клеток карты
     private int fieldWidth; //размер поля
 
     public BattleField(int fieldWidth)
@@ -77,6 +79,22 @@ public class BattleField
         return fieldWidth;
     }
 
+    public UserMove[] getUsersMoves() {
+        return usersMoves;
+    }
+
+    public void setUsersMoves(UserMove[] usersMoves) {
+        this.usersMoves = usersMoves;
+    }
+
+    public Deck[] getArrayOfFilledCells() {
+        return arrayOfFilledCells;
+    }
+
+    public void setArrayOfFilledCells(Deck[] arrayOfFilledCells) {
+        this.arrayOfFilledCells = arrayOfFilledCells;
+    }
+
     public Ship setupFirstDeckCoords(Ship ship) //возвращает корабль с заданными координатами первой палубы
     {
         ship.getDecks()[0].setX(2 + (int) (Math.random() * 9)); // задаем координаты Х и У первой палубы корабля
@@ -121,7 +139,7 @@ public class BattleField
             for (int i = 1; i < ship.getDecks().length; i++)
             {
                 ship.getDecks()[i].setX(ship.getDecks()[0].getX() + i);
-                ship.getDecks()[i].setY(ship.getDecks()[0].getX());
+                ship.getDecks()[i].setY(ship.getDecks()[0].getY());
             }
         }
         else //иначе ставим корабль вертикально
@@ -129,19 +147,59 @@ public class BattleField
             for (int i = 1; i < ship.getDecks().length; i++)
             {
                 ship.getDecks()[i].setY(ship.getDecks()[0].getY() + i);
-                ship.getDecks()[i].setY(ship.getDecks()[0].getY());
+                ship.getDecks()[i].setX(ship.getDecks()[0].getX());
             }
         }
         return ship;
     }
 
-    public void printBattleField() //вывод на консоль поля битвы
+    public void printUpdateBattleFieldAfterShoot() //вывод на консоль поля битвы
     {
         Logger logger = new Logger();
         logger.printHorizontalPart(getFieldWidth());
-        logger.printVerticalPart(getFieldWidth());
+        logger.printVerticalPart(getFieldWidth(), this ,getUsersMoves(),'x','o');
     }
 
+    public void printEmptyBattleField() //вывод на консоль поля битвы
+    {
+        Logger logger = new Logger();
+        logger.printHorizontalPart(getFieldWidth());
+        logger.printVerticalPart(getFieldWidth(), this ,getUsersMoves(),' ',' ');
+    }
+
+
+//todo: закончил здесь (доработать алгоритм сравнение координат (метка))
+    public Deck [] fillAllShipsDecksCoords() //назначает координаты палубам всех кораблей и сводит все занятые клетки в массив который возвращает
+    {
+        int counter = 0;
+        boolean isExclusiveCoords;
+        for (Ship ship : getAllTypesOfShips())
+        {
+            isExclusiveCoords = false;
+            while (!isExclusiveCoords) // проверка на неповторимость координат
+            {
+                ship = setupFirstDeckCoords(ship);
+                ship = setupCoordsAllDecksInShip(ship);
+
+                for(Deck deck : ship.getDecks())
+                {
+//todo: метка
+                    if(Arrays.asList(arrayOfFilledCells).contains(deck)) //если массив занятых клеток не содержит ни одной клетки в которую записана палуба нового корабля
+                    {
+                        isExclusiveCoords = false;
+                    }
+                    else isExclusiveCoords = true;
+                }
+            }
+
+            for (Deck deck : ship.getDecks())
+            {
+                arrayOfFilledCells[counter] = deck;
+                counter++;
+            }
+        }
+        return arrayOfFilledCells;
+    }
 
     @Override
     public String toString() {
