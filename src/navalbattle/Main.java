@@ -1,10 +1,7 @@
 package navalbattle;
 
 import navalbattle.battlefield.BattleField;
-import navalbattle.battleships.FourDecksShip;
-import navalbattle.battleships.OneDeckShip;
-import navalbattle.battleships.ThreeDecksShip;
-import navalbattle.battleships.TwoDecksShip;
+import navalbattle.battleships.*;
 
 import java.util.Arrays;
 
@@ -12,8 +9,13 @@ public class Main
 {
     public static void main(String[] args)
     {
-        Game game = new Game();
-        game.start();
+/*        Game game = new Game();
+        game.start();*/
+
+        BattleField field = new BattleField(10);
+        System.out.println(Arrays.toString(field.getAllTypesOfShips()));
+        field.setupFirstDeckCoords(field.getAllTypesOfShips()[0]);
+        System.out.println(field.getAllTypesOfShips()[0]);
     }
 }
 

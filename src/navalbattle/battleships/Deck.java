@@ -1,11 +1,12 @@
-package navalbattle;
+package navalbattle.battleships;
 
-public class Deck
+public class Deck //класс представляющий палубу корабля с координатами
 {
     private int x;
     private int y;
 
-    public Deck(int x, int y) {
+    public Deck(int x, int y)
+    {
         this.x = x;
         this.y = y;
     }

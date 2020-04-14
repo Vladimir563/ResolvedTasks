@@ -1,71 +1,35 @@
 package navalbattle;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import navalbattle.battlefield.BattleField;
+import navalbattle.battleships.Deck;
 
 import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Scanner;
 
 public class Game
 {
-
-    private Deck [] usersMove = new Deck[50]; //массив в который будут записываться все ходы
+    private Deck[] usersMove = new Deck[50]; //массив в который будут записываться все ходы
     private Deck [] opponentsMove = new Deck[50];
-    private Ship [] usersShips = {new Ship(usersMove)};
-    private Ship [] opponentsShips = {new Ship(opponentsMove)};
     private int counterUserMoves = 0;
     private int counterOpponentsMoves = 0;
-    private String shootColor = textColours.ANSI_WHITE.getCode();
     public static int usersScore = 0;
     public static int opponentScore = 0;
 
-    public Deck[] getOpponentsMove() {
-        return opponentsMove;
-    }
-
-    public void setOpponentsMove(Deck[] opponentsMove) {
-        this.opponentsMove = opponentsMove;
-    }
-
-    public Deck[] getUsersMove() {
-        return usersMove;
-    }
-
-    public int getCounterOpponentsMoves() {
-        return counterOpponentsMoves;
-    }
-
-    public void setCounterOpponentsMoves(int counterOpponentsMoves) {
-        this.counterOpponentsMoves = counterOpponentsMoves;
-    }
-
-    public void setUsersMove(Deck[] usersMove) {
-        this.usersMove = usersMove;
-    }
-
-    public int getCounterUserMoves() {
-        return counterUserMoves;
-    }
-
-    public void setCounterUserMoves(int counterUserMoves) {
-        this.counterUserMoves = counterUserMoves;
-    }
-
     public void start()
     {
-        BattleField battleField = new BattleField();
+        BattleField battleField = new BattleField(10);
         System.out.println("Морской бой начался!");
-        battleField.fieldGenerate();
+//        battleField.fieldGenerate();
+
+
+
         LocalTime time = LocalTime.now().plusSeconds(30);
         while(LocalTime.now().isBefore(time))
         {
 //todo: ход игрока
-            personsMove(getCoordinatsFromPlayer(),battleField,usersShips);
+//            personsMove(getCoordinatsFromPlayer(),battleField,usersShips);
 
 //todo: ход противника
-            personsMove(opponentsMove(),battleField,opponentsShips);
+//            personsMove(opponentsMove(),battleField,opponentsShips);
         }
 
         System.out.println("Время вышло! Игра окончена\n");
@@ -83,11 +47,10 @@ public class Game
             System.out.println("☆☆☆Ничья!☆☆☆\n");
         }
         System.out.println("Расположение кораблей");
-        battleField.showCurrentShipsOnMap(battleField.getAllShipsArray(),'□');
     }
 
 
-    public Deck getCoordinatsFromPlayer()
+/*    public Deck getCoordinatsFromPlayer()
     {
         Deck deck;
         Scanner in = new Scanner(System.in);
@@ -138,9 +101,9 @@ public class Game
             setCounterOpponentsMoves(getCounterOpponentsMoves() + 1);
         }
         return deck;
-    }
+    }*/
 
-    public void personsMove(Deck p, BattleField battleField, Ship [] ships)
+    /*public void personsMove(Deck p, BattleField battleField, Ship [] ships)
     {
         String userCode = usersShips.toString();
         String opponentCode = opponentsShips.toString();
@@ -176,5 +139,5 @@ public class Game
             System.out.println("Промах!");
         }
         battleField.showCurrentShipsOnMap(ships,'x');
-    }
+    }*/
 }
