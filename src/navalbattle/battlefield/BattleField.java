@@ -184,7 +184,7 @@ public class BattleField
                 for(Deck deck : ship.getDecks())
                 {
 //todo: метка
-                    if(Arrays.asList(arrayOfFilledCells).contains(deck)) //если массив занятых клеток не содержит ни одной клетки в которую записана палуба нового корабля
+                    if(isCoordsInArray(getArrayOfFilledCells(),deck)) //если массив занятых клеток содержит клетку в которую записана палуба нового корабля
                     {
                         isExclusiveCoords = false;
                     }
@@ -192,13 +192,26 @@ public class BattleField
                 }
             }
 
-            for (Deck deck : ship.getDecks())
+            for (Deck deck : ship.getDecks()) //добавляем эксклюзивные координаты в массив занятых клеток
             {
                 arrayOfFilledCells[counter] = deck;
                 counter++;
             }
         }
         return arrayOfFilledCells;
+    }
+
+    public boolean isCoordsInArray(Deck [] arrayOfFilledCells, Deck deckWithCoords) //проверяет есть ли данная клетка в массиве заполненных клеток
+    {
+        for(Deck deck : arrayOfFilledCells)
+        {
+            if(deck == null) return false;
+            if(deck.getX() == deckWithCoords.getX() && deck.getY() == deckWithCoords.getY())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
