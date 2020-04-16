@@ -8,23 +8,9 @@ public class Main
 {
     public static void main(String[] args)
     {
-/*        Game game = new Game();
-        game.start();*/
+        Game game = new Game();
+        game.start();
 
-        BattleField field = new BattleField(10);
-        System.out.println(field.toString());
-
-        field.setupFirstDeckCoords(field.getAllTypesOfShips()[9]);
-        System.out.println(field.getAllTypesOfShips()[9].toString());
-        field.setupCoordsAllDecksInShip(field.getAllTypesOfShips()[9]);
-        System.out.println(field.getAllTypesOfShips()[9].toString());
-
-        System.out.println("________________________________________");
-        System.out.println(Arrays.toString(field.getArrayOfFilledCells()));
-        field.fillAllShipsDecksCoords();
-        System.out.println(Arrays.toString(field.getArrayOfFilledCells()));
-        System.out.println("________________________________________");
-        field.printUpdateBattleFieldAfterShoot();
     }
 }
 

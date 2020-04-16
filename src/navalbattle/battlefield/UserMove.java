@@ -3,15 +3,13 @@ import navalbattle.battleships.Deck;
 
 public class UserMove //ход пользователя
 {
-    private Deck[] moves = new Deck[50];
+    private Deck userMove = new Deck(0,0);
     private boolean isUserIsPlayer = true;
 
-    public Deck[] getMoves() {
-        return moves;
-    }
-
-    public void setMoves(Deck[] moves) {
-        this.moves = moves;
+    public UserMove(Deck userMove, boolean isUserIsPlayer)
+    {
+        this.userMove = userMove;
+        this.isUserIsPlayer = isUserIsPlayer;
     }
 
     public boolean isUserIsPlayer() {
@@ -20,5 +18,13 @@ public class UserMove //ход пользователя
 
     public void setUserIsPlayer(boolean userIsPlayer) {
         isUserIsPlayer = userIsPlayer;
+    }
+
+    public Deck getUserMove() {
+        return userMove;
+    }
+
+    public void setUserMove(Deck userMove) {
+        this.userMove = userMove;
     }
 }
