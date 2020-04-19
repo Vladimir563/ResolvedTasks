@@ -1,25 +1,23 @@
 package navalbattle.battleships;
 
-import navalbattle.battleships.Deck;
-
 import java.util.Arrays;
 
 public class Ship //суперкласс для всех типов кораблей
 {
-    private Deck[] decks; //массив палуб для каждого типа корабля свой
+    private Cell[] cells; //массив палуб для каждого типа корабля свой
     private boolean isHorizontalPos = true; //ориентация корабля на карте
 
-    public Ship(Deck ... deck)
+    public Ship(Cell... cell)
     {
-        decks = deck;
+        cells = cell;
     }
 
-    public Deck[] getDecks() {
-        return decks;
+    public Cell[] getCells() {
+        return cells;
     }
 
-    public void setDecks(Deck[] decks) {
-        this.decks = decks;
+    public void setCells(Cell[] cells) {
+        this.cells = cells;
     }
 
     public boolean isHorizontalPos() {
@@ -33,7 +31,7 @@ public class Ship //суперкласс для всех типов корабл
     @Override
     public String toString() {
         return "Ship{" +
-                "decks=" + Arrays.toString(decks) +
+                "decks=" + Arrays.toString(cells) +
                 ", isHorizontalPos=" + isHorizontalPos +
                 '}';
     }

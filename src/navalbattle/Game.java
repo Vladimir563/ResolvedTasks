@@ -1,12 +1,13 @@
 package navalbattle;
 
-import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import navalbattle.battlefield.BattleField;
 import navalbattle.battlefield.UserMove;
-import navalbattle.battleships.Deck;
+import navalbattle.battleships.Cell;
+import navalbattle.nbexceptions.WrongLevelGameException;
 
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Game
@@ -15,8 +16,27 @@ public class Game
     private int counterUsersMoves = 0;
     public static int usersScore = 0;
     public static int opponentScore = 0;
-    private textColours playersHit;
-    private textColours opponentsHit;
+    public static textColours playersHit;
+    public static textColours opponentsHit;
+    private int userLvl;
+    private int timeForEndOfGame = 0;
+
+    public int getTimeForEndOfGame() {
+        return timeForEndOfGame;
+    }
+
+    public void setTimeForEndOfGame(int timeForEndOfGame) {
+        this.timeForEndOfGame = timeForEndOfGame;
+    }
+
+    public int getUserLvl() {
+        return userLvl;
+    }
+
+    public void setUserLvl(int userLvl)
+    {
+        this.userLvl = userLvl;
+    }
 
     public textColours getPlayersHit() {
         return playersHit;
@@ -36,59 +56,51 @@ public class Game
 
     public void start()
     {
+//todo: инициализация системных обьектов
         Scanner in = new Scanner(System.in);
+        Logger logger = new Logger();
         BattleField battleField = new BattleField(10);
+
+//todo: начало игры
         System.out.println("Запуск игры...");
-        battleField.fillAllShipsDecksCoords();
+        battleField.fillAllShipsDecksCords(); //заполняет карту кораблями
+
+//FIXME: будет удален
         System.out.println(Arrays.toString(battleField.getAllTypesOfShips()));
-        System.out.println("Выберите свой цвет!");
-        System.out.println("1 -" + textColours.ANSI_GREEN.getCode() + "зеленый\n" + textColours.ANSI_RESET.getCode() + "2 -" +
-                textColours.ANSI_BLUE.getCode() + "голубой\n" + textColours.ANSI_RESET.getCode() + "3 -" + textColours.ANSI_RED.getCode() + "красный\n" + textColours.ANSI_RESET.getCode() +
-                "4 -" + textColours.ANSI_CYAN.getCode() + "циан\n" + textColours.ANSI_RESET.getCode() + "5 -" + textColours.ANSI_YELLOW.getCode() + "желтый\n" + textColours.ANSI_RESET.getCode() +
-                "6 -" + textColours.ANSI_PURPLE.getCode() + "пурпурный" + textColours.ANSI_RESET.getCode());
+//FIXME: end
+
+//todo: преднастройка игры, выбор цветов для игроков и уровня сложности
+        System.out.print("Выберите уровень сложности (1 - легкий, 2 - средний, 3 - трудный): ");
+        setUserLvl(in.nextInt());
+
+        setTimeForEndOfGame(chooseYourGameLevel(getUserLvl(), getTimeForEndOfGame()));
+
+        System.out.println("Выберите свой цвет и цвет оппонента!");
+        printChooseColoursInfo(); //вывод информации для выбора цвета игрока и оппонента
         System.out.print("Выш цвет: ");
         int hitColourPlayer = in.nextInt();
-        setPlayersHit(chooseColoursForHits(hitColourPlayer, playersHit));
-
-        System.out.println();
-
-        System.out.println("Выберите цвет оппонента!");
-        System.out.println("1 -" + textColours.ANSI_GREEN.getCode() + "зеленый\n" + textColours.ANSI_RESET.getCode() + "2 -" +
-                textColours.ANSI_BLUE.getCode() + "голубой\n" + textColours.ANSI_RESET.getCode() + "3 -" + textColours.ANSI_RED.getCode() + "красный\n" + textColours.ANSI_RESET.getCode() +
-                "4 -" + textColours.ANSI_CYAN.getCode() + "циан\n" + textColours.ANSI_RESET.getCode() + "5 -" + textColours.ANSI_YELLOW.getCode() + "желтый\n" + textColours.ANSI_RESET.getCode() +
-                "6 -" + textColours.ANSI_PURPLE.getCode() + "пурпурный" + textColours.ANSI_RESET.getCode());
+        playersHit = chooseColoursForHits(hitColourPlayer, playersHit);
         System.out.print("Цвет оппонента: ");
         int hitColourOpponent = in.nextInt();
-        setOpponentsHit(chooseColoursForHits(hitColourOpponent, opponentsHit));
-
+        opponentsHit = chooseColoursForHits(hitColourOpponent, opponentsHit);
+        System.out.println();
         System.out.println(textColours.ANSI_CYAN.getCode() + "Морской бой начался!" + textColours.ANSI_RESET.getCode());
-        LocalTime time = LocalTime.now().plusSeconds(30);
-        while(LocalTime.now().isBefore(time))
+
+        LocalTime timeEndOfGame = LocalTime.now().plusSeconds(getTimeForEndOfGame()); //задание времени игры (можно тоже будет сделать опцией)
+
+        while(LocalTime.now().isBefore(timeEndOfGame)) //пока не закончилось время продолжать игру
         {
 //todo: ход игрока
-            personsMove(getCoordinatsFromPlayer(), battleField);
+            personsMove(getCoordinatesFromPlayer(), battleField, logger);
 
 //todo: ход противника
-            personsMove(opponentsMove(), battleField);
+            personsMove(getCoordinatesFromOpponent(), battleField, logger);
         }
 
-        System.out.println("Время вышло! Игра окончена\n");
-        if(Game.usersScore > Game.opponentScore)
-        {
-            System.out.println("✔Вы выйграли! Поздравляем!✔\n");
-        }
-        else if (Game.usersScore < Game.opponentScore)
-        {
-            System.out.println("†Вы проиграли...†\n");
-        }
-        else
-        {
-            System.out.println("☆☆☆Ничья!☆☆☆\n");
-        }
+        printEndOfGame();
     }
 
-//todo: !Arrays.asList(usersMoves).contains(userMove) не работает!!!
-    public UserMove getCoordinatsFromPlayer()
+    public UserMove getCoordinatesFromPlayer() //получение координат выстрела от игрока
     {
         UserMove userMove;
         Scanner in = new Scanner(System.in);
@@ -99,9 +111,9 @@ public class Game
             int horizontal = in.nextInt();
             System.out.print("По вертикали: ");
             int vertical = in.nextInt();
-            userMove = new UserMove(new Deck(horizontal,vertical),true);
+            userMove = new UserMove(new Cell(horizontal,vertical),true);
 
-            if(!Arrays.asList(usersMoves).contains(userMove))
+            if(!isThisMoveWasAlready(usersMoves,userMove)) //определяем был ли уже сделан такой ход
             {
                 usersMoves[counterUsersMoves] = userMove; //записываем ход игрока в массив
                 counterUsersMoves++;
@@ -113,24 +125,23 @@ public class Game
         return userMove;
     }
 
-    public UserMove opponentsMove()
+    public UserMove getCoordinatesFromOpponent() //получение координат выстрела от оппонента
     {
         UserMove opponentsMove;
 //todo: имитация ожидания хода противника
-
         String str = "";
         while (true) // пока противник не сделает ход который еще не делал
         {
             try
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     System.out.print("Ожидание хода противника");
-                    for (int j = 0; j < 7 ; j++)
+                    for (int j = 0; j < 3 ; j++)
                     {
                         str += ".";
                         System.out.print(str);
-                        Thread.sleep(300);
+                        Thread.sleep(500);
                         str = "";
                     }
                     str = "\rОжидание хода противника";
@@ -141,20 +152,18 @@ public class Game
                 System.out.println(e.getMessage());
             }
 //todo: end
-
-            opponentsMove = new UserMove(new Deck((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))),false);
-            if(!Arrays.asList(usersMoves).contains(opponentsMove))
+            opponentsMove = new UserMove(new Cell((2 + (int) (Math.random() * 9)), (2 + (int) (Math.random() * 9))),false);
+            if(!isThisMoveWasAlready(usersMoves,opponentsMove))
             {
                 usersMoves[counterUsersMoves] = opponentsMove; //записываем ход противника в массив
                 counterUsersMoves++;
                 break;
             }
-            System.out.println("Данный ход уже был сделан, выберите другой!");
         }
         return opponentsMove;
     }
 
-    public void personsMove(UserMove userMove, BattleField battleField)
+    public void personsMove(UserMove userMove, BattleField battleField, Logger logger) //ход пользователя
     {
         boolean isHit = false;
         System.out.println();
@@ -174,7 +183,6 @@ public class Game
             if(userMove.isUserIsPlayer()) //если попал игрок +игроку
             {
                 Game.usersScore = Game.usersScore + 1;
-
             }
             else //иначе +оппоненту
             {
@@ -185,10 +193,10 @@ public class Game
         {
             System.out.println("Промах!");
         }
-        battleField.printUpdateBattleFieldAfterShoot(usersMoves,getPlayersHit(),getOpponentsHit());
+        battleField.printUpdateBattleFieldAfterShoot(usersMoves,getPlayersHit(),getOpponentsHit(),logger);
     }
 
-    public textColours chooseColoursForHits(int num, textColours userColour)
+    public textColours chooseColoursForHits(int num, textColours userColour) //выбор цвета пользователя
     {
         switch (num)
         {
@@ -221,5 +229,62 @@ public class Game
                 System.out.println("Не существующий цвет. Будет установлен цвет по молчанию (" + textColours.ANSI_RED.getCode() + "красный" + textColours.ANSI_RESET.getCode() + ")");
         }
         return userColour;
+    }
+
+    public boolean isThisMoveWasAlready(UserMove [] usersMoves, UserMove userMove) //возвращает булеву переменную показывающую есть ли уже такой ход в массиве ходов
+    {
+        for(UserMove userMoveInArr : usersMoves)
+        {
+            if(userMoveInArr == null) return false;
+            if( userMoveInArr.getUserMove().getX() == userMove.getUserMove().getX() && userMoveInArr.getUserMove().getY() == userMove.getUserMove().getY())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void printChooseColoursInfo() //вывод на консоль информации о выборе цветов игроков
+    {
+        System.out.println("1 -" + textColours.ANSI_GREEN.getCode() + "зеленый\n" + textColours.ANSI_RESET.getCode() + "2 -" +
+                textColours.ANSI_BLUE.getCode() + "голубой\n" + textColours.ANSI_RESET.getCode() + "3 -" + textColours.ANSI_RED.getCode() + "красный\n" + textColours.ANSI_RESET.getCode() +
+                "4 -" + textColours.ANSI_CYAN.getCode() + "циан\n" + textColours.ANSI_RESET.getCode() + "5 -" + textColours.ANSI_YELLOW.getCode() + "желтый\n" + textColours.ANSI_RESET.getCode() +
+                "6 -" + textColours.ANSI_PURPLE.getCode() + "пурпурный" + textColours.ANSI_RESET.getCode());
+    }
+
+    public void printEndOfGame() //вывод на консоль информации об окончании игры
+    {
+        System.out.println("Время вышло! Игра окончена\n");
+        if(Game.usersScore > Game.opponentScore)
+        {
+            System.out.println("✔Вы выйграли! Поздравляем!✔\n");
+        }
+        else if (Game.usersScore < Game.opponentScore)
+        {
+            System.out.println("†Вы проиграли...†\n");
+        }
+        else
+        {
+            System.out.println("☆☆☆Ничья!☆☆☆\n");
+        }
+    }
+
+    public int chooseYourGameLevel(int lvl, int timeForEnd)
+    {
+        switch (lvl)
+        {
+            case 1:
+                System.out.println("Вы выбрали легкий уровень");
+                return 360;
+            case 2:
+                System.out.println("Вы выбрали средний уровень");
+                return 120;
+            case 3:
+                System.out.println("Вы выбрали трудный уровень");
+                return 60;
+            default:
+                System.out.println("Выбранного уровня сложности не существует. Будет установлен режим по умолчанию (легкий)");
+                return 360;
+        }
     }
 }

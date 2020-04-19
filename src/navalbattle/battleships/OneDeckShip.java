@@ -2,8 +2,8 @@ package navalbattle.battleships;
 
 public class OneDeckShip extends Ship
 {
-    public OneDeckShip(Deck deck)
+    public OneDeckShip(Cell cell)
     {
-        super(deck);
+        super(cell);
     }
 }

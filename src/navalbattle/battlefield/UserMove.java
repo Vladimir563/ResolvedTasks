@@ -1,18 +1,20 @@
 package navalbattle.battlefield;
-import navalbattle.battleships.Deck;
+import navalbattle.battleships.Cell;
 
 public class UserMove //ход пользователя
 {
-    private Deck userMove = new Deck(0,0);
-    private boolean isUserIsPlayer = true;
+    private Cell userMove;
+    private boolean isUserIsPlayer;
 
-    public UserMove(Deck userMove, boolean isUserIsPlayer)
+    public UserMove(Cell userMove, boolean isUserIsPlayer)
     {
         this.userMove = userMove;
         this.isUserIsPlayer = isUserIsPlayer;
     }
 
-    public boolean isUserIsPlayer() {
+
+    public boolean isUserIsPlayer()
+    {
         return isUserIsPlayer;
     }
 
@@ -20,11 +22,19 @@ public class UserMove //ход пользователя
         isUserIsPlayer = userIsPlayer;
     }
 
-    public Deck getUserMove() {
+    public Cell getUserMove() {
         return userMove;
     }
 
-    public void setUserMove(Deck userMove) {
+    public void setUserMove(Cell userMove) {
         this.userMove = userMove;
+    }
+
+    @Override
+    public String toString() {
+        return "UserMove{" +
+                "userMove=" + userMove +
+                ", isUserIsPlayer=" + isUserIsPlayer +
+                '}';
     }
 }
