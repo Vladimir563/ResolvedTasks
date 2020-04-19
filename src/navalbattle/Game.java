@@ -1,5 +1,6 @@
 package navalbattle;
 
+import com.sun.xml.internal.ws.api.model.wsdl.WSDLOutput;
 import navalbattle.battlefield.BattleField;
 import navalbattle.battlefield.UserMove;
 import navalbattle.battleships.Cell;
@@ -65,24 +66,58 @@ public class Game
         System.out.println("Запуск игры...");
         battleField.fillAllShipsDecksCords(); //заполняет карту кораблями
 
-//FIXME: будет удален
+/*//FIXME: будет удален (выводит координаты всех кораблей)
         System.out.println(Arrays.toString(battleField.getAllTypesOfShips()));
-//FIXME: end
+//FIXME: end*/
 
 //todo: преднастройка игры, выбор цветов для игроков и уровня сложности
+//todo: обработка установки уровня сложности
         System.out.print("Выберите уровень сложности (1 - легкий, 2 - средний, 3 - трудный): ");
-        setUserLvl(in.nextInt());
+        try
+        {
+            int lvl = in.nextInt();
+            setUserLvl(lvl);
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+        }
+//todo: end
 
-        setTimeForEndOfGame(chooseYourGameLevel(getUserLvl(), getTimeForEndOfGame()));
+        setTimeForEndOfGame(chooseYourGameLevel(getUserLvl(), getTimeForEndOfGame())); //установка времени длительности игры
 
         System.out.println("Выберите свой цвет и цвет оппонента!");
         printChooseColoursInfo(); //вывод информации для выбора цвета игрока и оппонента
+
+        Scanner in1 = new Scanner(System.in);
         System.out.print("Выш цвет: ");
-        int hitColourPlayer = in.nextInt();
-        playersHit = chooseColoursForHits(hitColourPlayer, playersHit);
+//todo: обработка ввода цвета игрока
+        try
+        {
+            int hitColourPlayer = in1.nextInt();
+            playersHit = chooseColoursForHits(hitColourPlayer, playersHit);
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+            playersHit = chooseColoursForHits(9, playersHit);
+        }
+//todo: end
+
+        Scanner in2 = new Scanner(System.in);
         System.out.print("Цвет оппонента: ");
-        int hitColourOpponent = in.nextInt();
-        opponentsHit = chooseColoursForHits(hitColourOpponent, opponentsHit);
+//todo: обработка ввода цвета оппонента
+        try
+        {
+            int hitColourOpponent = in2.nextInt();
+            opponentsHit = chooseColoursForHits(hitColourOpponent, opponentsHit);
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+            opponentsHit = chooseColoursForHits(9, opponentsHit);
+        }
+//todo: end
         System.out.println();
         System.out.println(textColours.ANSI_CYAN.getCode() + "Морской бой начался!" + textColours.ANSI_RESET.getCode());
 
@@ -106,12 +141,11 @@ public class Game
         Scanner in = new Scanner(System.in);
         while (true)
         {
-            System.out.println("Ваш ход");
-            System.out.print("По горизонтали: ");
-            int horizontal = in.nextInt();
-            System.out.print("По вертикали: ");
-            int vertical = in.nextInt();
-            userMove = new UserMove(new Cell(horizontal,vertical),true);
+            int [] userCoordinates;
+
+            userCoordinates = getUserCoordinate();
+
+            userMove = new UserMove(new Cell(userCoordinates[0],userCoordinates[1]),true);
 
             if(!isThisMoveWasAlready(usersMoves,userMove)) //определяем был ли уже сделан такой ход
             {
@@ -286,5 +320,53 @@ public class Game
                 System.out.println("Выбранного уровня сложности не существует. Будет установлен режим по умолчанию (легкий)");
                 return 360;
         }
+    }
+
+    public int [] getUserCoordinate()
+    {
+        Scanner in1 = new Scanner(System.in);
+        Scanner in2 = new Scanner(System.in);
+        int [] usersShoot = new int[2];
+        int horizontal;
+        int vertical;
+
+        System.out.print("По горизонтали (буквенное обозначение): ");
+        try
+        {
+           String str = in1.nextLine();
+           if(str.length() != 1)
+           {
+               System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+               return null;
+           }
+
+           if(str.toCharArray()[0] == 'к')
+           {
+               horizontal = ((int) str.toCharArray()[0]) - 1072;
+           }
+           else
+           {
+               horizontal = ((int) str.toCharArray()[0]) - 1071;
+           }
+           usersShoot[0] = horizontal;
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+            return null;
+        }
+
+        System.out.print("По вертикали (цифровое обозначение): ");
+        try
+        {
+            vertical = in2.nextInt();
+            usersShoot[1] = vertical;
+        }
+        catch (InputMismatchException e)
+        {
+            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+            return null;
+        }
+        return usersShoot;
     }
 }
