@@ -145,15 +145,18 @@ public class Game
 
             userCoordinates = getUserCoordinate();
 
-            userMove = new UserMove(new Cell(userCoordinates[0],userCoordinates[1]),true);
-
-            if(!isThisMoveWasAlready(usersMoves,userMove)) //определяем был ли уже сделан такой ход
+            if(userCoordinates != null)
             {
-                usersMoves[counterUsersMoves] = userMove; //записываем ход игрока в массив
-                counterUsersMoves++;
-                break;
+                userMove = new UserMove(new Cell(userCoordinates[0],userCoordinates[1]),true);
+
+                if(!isThisMoveWasAlready(usersMoves,userMove)) //определяем был ли уже сделан такой ход
+                {
+                    usersMoves[counterUsersMoves] = userMove; //записываем ход игрока в массив
+                    counterUsersMoves++;
+                    break;
+                }
+                System.out.println("Данный ход уже был сделан, выберите другой!");
             }
-            System.out.println("Данный ход уже был сделан, выберите другой!");
         }
 
         return userMove;
@@ -330,13 +333,19 @@ public class Game
         int horizontal;
         int vertical;
 
-        System.out.print("По горизонтали (буквенное обозначение): ");
+        System.out.print("Ваш ход (пример а1): ");
         try
         {
            String str = in1.nextLine();
-           if(str.length() != 1)
+           if(str.length() > 3)
            {
-               System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+               System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода (причина: вводимая строка не может быть больше 3 символов)" + textColours.ANSI_RESET.getCode());
+               return null;
+           }
+
+           if((int)str.toCharArray()[0] < 1072 || (int)str.toCharArray()[0] > 1082)
+           {
+               System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода (буквенные символы могут быть только от \"а\" до \"к\")" + textColours.ANSI_RESET.getCode());
                return null;
            }
 
@@ -348,25 +357,40 @@ public class Game
            {
                horizontal = ((int) str.toCharArray()[0]) - 1071;
            }
+
+           String [] newStrArr = str.split("");
+
+           try
+           {
+               if(newStrArr.length > 2)
+               {
+                   vertical = Integer.parseInt(newStrArr[1] + newStrArr[2]);
+               }
+               else
+               {
+                   vertical = Integer.parseInt(newStrArr[1]);
+               }
+           }
+           catch (InputMismatchException e)
+           {
+               return null;
+           }
+
+           if (vertical == 0 || vertical > 10 || vertical < 0)
+           {
+               System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода (по вертикали может быть только число из диапазона (1:10))" + textColours.ANSI_RESET.getCode());
+               return null;
+           }
+
            usersShoot[0] = horizontal;
+           usersShoot[1] = vertical;
         }
-        catch (InputMismatchException e)
+        catch (NumberFormatException e)
         {
-            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
+            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода (строка имела неверный формат)" + textColours.ANSI_RESET.getCode());
             return null;
         }
 
-        System.out.print("По вертикали (цифровое обозначение): ");
-        try
-        {
-            vertical = in2.nextInt();
-            usersShoot[1] = vertical;
-        }
-        catch (InputMismatchException e)
-        {
-            System.out.println(textColours.ANSI_RED.getCode() + "Неверный формат ввода" + textColours.ANSI_RESET.getCode());
-            return null;
-        }
         return usersShoot;
     }
 }
