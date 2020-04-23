@@ -1,9 +1,6 @@
 package maptasks;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MapTask {
     public static void main(String[] args)
@@ -67,6 +64,17 @@ public class MapTask {
                 "packages and web page editors now use Lorem Ipsum as their default model text and a search for lorem ipsum will " +
                 "uncover many web sites still uncover in their infancy Various versions uncover have evolved over the years uncover sometimes by accident" +
                 " sometimes on purpose injected humour and the like"; // !!! в тексте содержатся только буквы и пробельные символы !!!
+
+        System.out.println("\nTask4:");
+        System.out.println("Метод, принимающий на вход слово и возвращающий частоту встречаемости данного слова в тексте:");
+        String word = "by";
+        System.out.printf("Слово %s встречается в тексте %d раз(а)\n",word, returnFrequencyOfOccurrence(text,word));
+        System.out.println("\nМетод, который собирает все слова в группы по количеству букв:");
+        System.out.println(splitUpWordsOnGroups(text));
+        System.out.println("\nМетод, который выводит в консоль топ 10 самых частых слов");
+        System.out.println(returnTopTenMostCommonWords(text));
+        System.out.println("\nВывод частоты встречаемости букв анг алфавита в данном тексте. Вывод в процентах для каждой буквы");
+        System.out.println(returnRepeatabilityPercentageOfEachWord(text));
     }
 
     static List <String> returnLoginList(HashMap <String,String> hashMap, String city)
@@ -111,4 +119,88 @@ public class MapTask {
         return newHashMap;
     }
 
+    static int returnFrequencyOfOccurrence(String text, String word)
+    {
+        int counter = 1;
+        List <String> stringList = Arrays.asList(text.split(" "));
+        for(String w : stringList)
+        {
+            if(w.toLowerCase().equals(word)) counter++;
+        }
+        return counter;
+    }
+
+    static Map<Integer, LinkedHashSet<String>> splitUpWordsOnGroups(String text)
+    {
+        String[] stringList = text.split(" |-");
+        HashMap <Integer, LinkedHashSet<String>> hashMap = new HashMap<>();
+        for (int i = 1; i < 20; i++)
+        {
+            for(String word : stringList)
+            {
+                if(word.length() == i)
+                {
+                    if(hashMap.get(i) == null) hashMap.put(i, new LinkedHashSet<>());
+                    hashMap.get(i).add(word.toLowerCase());
+                }
+            }
+        }
+        return hashMap;
+    }
+
+    static List<String> returnTopTenMostCommonWords(String text)
+    {
+        List<String> list = new ArrayList<>();
+        TreeMap<String, Integer> treeMap = new TreeMap<>();
+        List <String> listStr = new ArrayList<>(Arrays.asList(text.split(" |-")));
+        for(String word : listStr)
+        {
+            treeMap.put(word,returnFrequencyOfOccurrence(text,word));
+        }
+
+        for (int i = 11; i > 0 ; i--)
+        {
+            for(Map.Entry<String,Integer> entry : treeMap.entrySet())
+            {
+                if(entry.getValue() == i && list.size() < 10)
+                {
+                    list.add(entry.getKey());
+                }
+                else continue;
+            }
+        }
+        return list;
+    }
+
+    static Map<String, String> returnRepeatabilityPercentageOfEachWord(String text)
+    {
+        HashMap<String, String> hashMap = new HashMap<>();
+        List<String> list = new ArrayList<>(Arrays.asList(text.split("|")));
+        for (int i = 0; i < list.size(); i++)
+        {
+            if(list.get(i).trim().length() == 0) list.remove(list.get(i));
+        }
+        int allLettersCount = list.size();
+
+        System.out.println(list.size());
+        char letter = 97;
+        for (int i = 0; i < 26; i++)
+        {
+            hashMap.put(Character.toString(letter), String.format("%d%%",Math.round((((float) returnCountOfThisLetter(text, Character.toString(letter))) * 100) / allLettersCount)));
+            letter++;
+        }
+        return  hashMap;
+    }
+
+    static int returnCountOfThisLetter(String text, String letter)
+    {
+        int counter = 1;
+        List<String> list = new ArrayList<>(Arrays.asList(text.split("|")));
+        for(String s : list)
+        {
+            if(s.equals(letter)) counter++;
+        }
+        return counter;
+    }
 }
+
