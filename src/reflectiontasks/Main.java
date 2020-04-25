@@ -8,10 +8,14 @@ import java.util.Arrays;
 
 public class Main
 {
-    public static void main(String[] args) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
-/*        toString(new Message());
+    public static void main(String[] args) throws IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException
+    {
+        System.out.println("Task1:");
+        toString(new Message());
         System.out.println();
-        toString(new User("Ivan", new Message()));*/
+        toString(new User("Ivan", new Message()));
+
+        System.out.println("\nTask2:");
         Message obj = (Message) createObjAndCallToString(new Message());
         System.out.println();
         try
