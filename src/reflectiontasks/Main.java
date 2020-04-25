@@ -13,8 +13,7 @@ public class Main
         System.out.println();
         toString(new User("Ivan", new Message()));*/
         Message obj = (Message) createObjAndCallToString(new Message());
-        System.out.println(obj.getTitle());
-
+        System.out.println();
         try
         {
             User obj2 = (User) createObjAndCallToString(new User("Vasya", new Message()));
@@ -63,6 +62,9 @@ public class Main
                     method.invoke(o, "This field was changed by Reflection!!!");
                 }
             }
+            Method toStringSomeClass = someClass.getDeclaredMethod("toString");
+            toStringSomeClass.setAccessible(true);
+            System.out.println(toStringSomeClass.invoke(o));
             return o;
         }
         return null;
@@ -76,16 +78,18 @@ public class Main
 //    название поля : значение поля
 //    проблема может случиться если поле обьекта не примитивный тип (вызвать у этого поля опять тот же метод (рекурсия)
 
-//2. если класс аннотирован аннотацией ConfigClass, создать обьект данного класса
-//// если в классе есть поле отмеченное аннотацией @Required - установить значение этого поля
-//
-////значение поля устанавливать через сеттер, исходя из того что
-////stringData() / setStringData()
+//todo:
+//    2. если класс аннотирован аннотацией ConfigClass, создать обьект данного класса
+//    // если в классе есть поле отмеченное аннотацией @Required - установить значение этого поля
+//    //значение поля устанавливать через сеттер, исходя из того что
+//    //stringData() / setStringData()
+//    field.getName()
+//    field.getField()
+//    field.getType()
 
-//field.getName()
-//field.getField()
-//field.getType()
-//у созданного обьекта вызвать метод public String toString(), используя рефлексию
+
+//todo:
+//    у созданного обьекта вызвать метод public String toString(), используя рефлексию
 
 
 //выписать интересные методы для

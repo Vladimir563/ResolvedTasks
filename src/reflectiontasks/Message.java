@@ -25,5 +25,14 @@ public class Message
     public void setTitle(String title) {
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "text='" + text + '\'' +
+                ", title='" + title + '\'' +
+                ", pagesCount=" + pagesCount +
+                '}';
+    }
 }
 
