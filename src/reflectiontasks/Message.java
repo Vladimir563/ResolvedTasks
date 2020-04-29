@@ -1,6 +1,6 @@
 package reflectiontasks;
 
-@ConfigClass (version = 2.5f)
+@ConfigClass1(version = 2.5f)
 public class Message
 {
     private String text = "Hello";

@@ -5,7 +5,8 @@ public class User
     private String name;
     private Message message;
 
-    public User(String name, Message message) {
+    public User(String name, Message message)
+    {
         this.name = name;
         this.message = message;
     }

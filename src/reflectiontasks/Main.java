@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 public class Main
 {
@@ -27,8 +26,6 @@ public class Main
         {
             System.out.println(e.fillInStackTrace());
         }
-
-
     }
 
     static void toString(Object o) throws IllegalAccessException {
@@ -51,7 +48,7 @@ public class Main
 
     static Object createObjAndCallToString(Object o) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Class someClass = o.getClass();
-        if(someClass.isAnnotationPresent(ConfigClass.class))
+        if(someClass.isAnnotationPresent(ConfigClass1.class))
         {
             Constructor constructorSomeClass = someClass.getDeclaredConstructor();
             o = constructorSomeClass.newInstance();

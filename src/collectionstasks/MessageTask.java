@@ -61,9 +61,7 @@ public class MessageTask {
         //  Например, было: [{URGENT, 4}, {HIGH, 9}, {LOW, 3}, {HIGH, 9}]
         //  на выходе: [{URGENT, 4}, {HIGH, 9}, {LOW, 3}]
         LinkedHashSet<Message> messageLinkedHashSet = new LinkedHashSet<>(messageList);
-        messageList.clear();
-        messageList.addAll(messageLinkedHashSet);
-        return messageList;
+        return new ArrayList<>(messageLinkedHashSet);
     }
 
     public static void removeEach(List<Message> messageList, MessagePriority priority)
