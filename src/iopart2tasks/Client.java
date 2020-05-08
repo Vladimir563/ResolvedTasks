@@ -1,10 +1,8 @@
 package iopart2tasks;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Client
