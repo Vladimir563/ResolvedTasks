@@ -106,6 +106,7 @@ public class Employee
     }
 }
 
+/*
 //todo: компараторы
 class EmployeeNameComparator implements Comparator<Employee>
 {
@@ -141,4 +142,4 @@ class EmployeeCompanyComparator implements Comparator<Employee>
     {
         return o1.getCompany().compareTo(o2.getCompany());
     }
-}
+}*/

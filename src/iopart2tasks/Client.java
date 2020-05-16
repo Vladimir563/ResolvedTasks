@@ -44,6 +44,8 @@ public class Client
         // /count
         // /exit
         // /ping
+        //FIXME: команды которые в if-ах лучше разнести в отдельны е классы и методы
+        //FIXME: серверу не нужно знать что клиент отключился (только для статистики)
         System.out.print("Введите имя: ");
         String name = scanner.nextLine();
         String command;
@@ -62,8 +64,8 @@ public class Client
                 case "/ping":
                     try(Connection connection = new Connection(getSocket()))
                     {
-                        connection.sendMessage(SimpleMessage.getInstance(name,"/ping"));
                         Long timeBefore = System.nanoTime();
+                        connection.sendMessage(SimpleMessage.getInstance(name,"/ping"));
                         connection.readMessage();
                         Long timeAfter = System.nanoTime();
                         System.out.println("Пинг в наносекундах: " + (timeAfter - timeBefore));
