@@ -35,6 +35,7 @@ public class TopTenWords
                 .limit(10)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
+        //сортировка в мапе не сохранится, т.к это HashMap (порядок хранения отличается от порядка добавления)
         map.entrySet().stream()
                 .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
                 .forEach(System.out::println);
