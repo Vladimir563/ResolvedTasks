@@ -40,7 +40,8 @@ public class SimpleMessage implements Serializable
                 " (" + dateTime + ")";
     }
 
-    public static SimpleMessage getInstance(String sender, String text){
+    public static SimpleMessage getInstance(String sender, String text)
+    {
         return new SimpleMessage(sender, text);
     }
 }
