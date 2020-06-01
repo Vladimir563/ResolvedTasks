@@ -1,5 +1,5 @@
 package onlinechat;
-
+//todo: многопоточный чат
 import onlinechat.serverthreads.ServerReaderThread;
 import onlinechat.serverthreads.ServerWriterThread;
 import java.io.IOException;
