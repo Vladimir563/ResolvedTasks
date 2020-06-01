@@ -35,7 +35,7 @@ public class ChatClient2
         //todo: формируем сообщение и отправляем на сервер в основном потоке
         System.out.print("Enter your name: ");
         String name = scanner.nextLine();
-        System.out.printf("(Authorized as %s)\n", name);
+        System.out.printf("(You authorized as %s)\n", name);
 
         //todo: запускаем reader поток для чтения собщений от сервера
         clientReaderThread = new Thread(new ClientReaderThread(ip,port,chatConnection));
