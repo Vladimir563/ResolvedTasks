@@ -49,7 +49,6 @@ public class ChatClient2
             if(strFromUser.equalsIgnoreCase("exit"))
             {
                 System.out.println("Client offline...");
-                clientReaderThread.interrupt();
                 chatConnection.closeConnection();
                 break;
             }

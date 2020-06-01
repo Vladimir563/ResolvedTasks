@@ -23,16 +23,7 @@ public class ClientReaderThread implements Runnable
         {
             try
             {
-                if(Thread.currentThread().isInterrupted()) //todo: проверить работает или нет?
-                {
-                    System.out.println("Close connection...");
-                    chatConnection.closeConnection();
-                    break;
-                }
-                else
-                {
-                    System.out.println(chatConnection.getMessage().toString());
-                }
+                System.out.println(chatConnection.getMessage().toString()); //todo: вывод сообщения в консоль
             }
             catch (IOException | ClassNotFoundException e)
             {
